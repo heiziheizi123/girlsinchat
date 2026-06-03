@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔒 F̷I̷N̷A̷L̷_̷S̷H̷U̷T̷D̷O̷W̷N̷ - chat10</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        /* 核心底色：bg_16.gif 疯狂平铺 */
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('bg_16.gif');
+            background-repeat: repeat;
+            background-color: #000000;
+            font-family: "SimSun", "宋体", sans-serif;
+            font-size: 13px;
+            color: #ffffff; 
+            overflow-x: hidden;
+        }
+
+        /* 崩溃、高频报错感的顶部通知 */
+        marquee {
+            background: #f43f5e;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px;
+            font-size: 13px;
+            border-bottom: 4px ridge #ffffff;
+            text-shadow: 2px 2px 4px #000000;
+        }
+
+        /* 头部大横幅：大理石 hys035.gif 叠加生日闪烁 */
+        header.chat-header {
+            max-width: 800px;
+            margin: 15px auto;
+            background-image: url('hys035.gif'), url('birthdayflashing.gif');
+            background-blend-mode: color-burn;
+            border: 5px outset #ffffff;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0px 0px 30px rgba(255, 255, 255, 0.5);
+        }
+
+        .header-title-container {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 15px 25px;
+            border: 3px dashed #ef4444;
+            display: inline-block;
+            transform: rotate(1deg);
+        }
+
+        header h1 {
+            margin: 5px 0;
+            font-size: 24px;
+            color: #ffffff;
+            letter-spacing: 3px;
+            text-shadow: 3px 3px 0px #f43f5e, -2px -2px 0px #000;
+        }
+
+        .timestamp-badge {
+            background: #000000;
+            color: #ffffff;
+            padding: 5px 15px;
+            font-size: 13px;
+            margin-top: 8px;
+            display: inline-block;
+            font-weight: bold;
+            border: 2px inset #ef4444;
+            letter-spacing: 2px;
+        }
+
+        /* 核心布局框架 */
+        .wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 10px;
+            position: relative;
+        }
+
+        /* 彻底移除背景、移除边框的【完全透明】聊天主体 */
+        main.chat-main {
+            width: 100%;
+            background: transparent; 
+            border: none; 
+            padding: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 碎裂的分割彩条 */
+        .glitch-line-1 {
+            width: 100%;
+            height: 16px;
+            background-image: url('pinkpurline.gif');
+            background-repeat: repeat-x;
+            margin-bottom: 25px;
+        }
+        .glitch-line-2 {
+            width: 100%;
+            height: 16px;
+            background-image: url('LINE44.gif');
+            background-repeat: repeat-x;
+            margin-top: 25px;
+            filter: invert(1) hue-rotate(180deg);
+        }
+
+        /* 聊天文字区 */
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            z-index: 10; 
+        }
+
+        /* 单个独白行：高密度半透明全黑衬底，保护纯白字体 */
+        .message-row {
+            padding: 18px;
+            background: rgba(0, 0, 0, 0.88); 
+            border-left: 5px solid #ffffff;
+            border-right: 5px solid #f43f5e;
+            line-height: 1.9;
+            border-radius: 6px;
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+        }
+
+        /* 纯白字体配合黑描边，确保清晰可见 */
+        .msg-text {
+            color: #ffffff !important;
+            font-size: 15px;
+            text-shadow: 2px 2px 3px #000000, -2px -2px 3px #000000, 2px -2px 3px #000000, -2px 2px 3px #000000;
+        }
+
+        /* 角色名字（强行拉白并加重影） */
+        .name-e { 
+            color: #ffffff !important; 
+            font-weight: bold; 
+            font-size: 16px;
+            text-shadow: 0px 0px 8px #ef4444, 2px 2px 0px #000000;
+        } 
+
+        /* ================= 素材疯狂乱入与堆叠 ================= */
+        .asset-new-error {
+            position: absolute;
+            top: 20px;
+            left: -80px;
+            width: 140px;
+            z-index: 1;
+            opacity: 0.7;
+            border: 2px solid #fff;
+        }
+        .asset-new-error-2 {
+            position: absolute;
+            bottom: 40px;
+            right: -80px;
+            width: 150px;
+            z-index: 5;
+            border: 2px dashed #f43f5e;
+        }
+        .asset-cute-kaos {
+            position: absolute;
+            top: 30%;
+            left: -30px;
+            width: 120px;
+            z-index: 1;
+            opacity: 0.4;
+        }
+        .asset-chama {
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            width: 60px;
+            z-index: 6;
+        }
+        .asset-cake {
+            position: absolute;
+            bottom: -20px;
+            left: 20px;
+            width: 70px;
+            z-index: 4;
+        }
+        .asset-kitty {
+            position: absolute;
+            top: 50%;
+            right: -40px;
+            width: 90px;
+            z-index: 4;
+        }
+        .asset-strawberries {
+            position: absolute;
+            top: 10%;
+            right: 15px;
+            width: 50px;
+            z-index: 4;
+        }
+        .asset-chicks {
+            position: absolute;
+            bottom: 60px;
+            left: -40px;
+            width: 60px;
+            z-index: 4;
+        }
+        .asset-birds {
+            position: absolute;
+            top: -30px;
+            left: 40%;
+            width: 45px;
+            z-index: 4;
+        }
+        .asset-eyes {
+            position: absolute;
+            top: 40%;
+            left: 45%;
+            width: 75px;
+            z-index: 1;
+            opacity: 0.25; 
+        }
+        .asset-pentagra {
+            position: absolute;
+            bottom: 100px;
+            right: 10px;
+            width: 80px;
+            z-index: 1;
+            opacity: 0.2;
+        }
+        .asset-webp-1 {
+            position: absolute;
+            top: 65%;
+            left: 10px;
+            width: 100px;
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        /* 终结控制台 */
+        footer.history-console-shutdown {
+            max-width: 800px;
+            margin: 25px auto;
+            background-image: url('hys035.gif');
+            border: 5px outset #ffffff;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0px 5px 25px rgba(0,0,0,1);
+        }
+
+        .console-container-inner {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 15px;
+            border: 2px solid #ffffff;
+        }
+
+        .console-links a {
+            color: #ffffff;
+            text-decoration: line-through;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .timeline-title {
+            font-size: 12px;
+            font-weight: bold;
+            margin: 12px 0 8px 0;
+            color: #ef4444;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 4px;
+        }
+
+        .timeline-node {
+            display: block;
+            padding: 8px 0;
+            background: #1c1917;
+            border: 2px outset #ffffff;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .timeline-node.active {
+            background: #ffffff;
+            color: #000000;
+            border: 2px inset #000000;
+            pointer-events: none;
+            box-shadow: 0 0 10px #ffffff;
+        }
+
+        @media (max-width: 600px) {
+            .timeline-grid { grid-template-columns: repeat(5, 1fr); }
+            .asset-new-error, .asset-new-error-2 { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <marquee scrollamount="4">
+        绉樺瘑鍩哄湴鏈嶅姟鏈熸弧銆傛�ｅ湪娉ㄩ攢鍏ㄩ儴鍏�缃戣妭鐐广€傝阿璋�浣犱滑鏇炬潵杩囥€�
+    </marquee>
+
+    <header class="chat-header">
+        <img src="3688305ivtv18plwx.jpg" class="asset-new-error" alt="System Corrupt Data">
+        <img src="birds.gif" class="asset-birds" alt="Birds Decor">
+        <img src="glitterstrawberries.gif" class="asset-strawberries" alt="Strawberries">
+
+        <div class="header-title-container">
+            <h1>我们在文字里得到永生</h1>
+            <div class="timestamp-badge">系统终止时间：1979/1/1日 (chat10)</div>
+        </div>
+    </header>
+
+    <div class="wrapper">
+
+        <img src="3688305ivtv18plwx.jpg" class="asset-new-error-2" alt="System Corrupt Data 2">
+        <img src="cute_kaos.gif" class="asset-cute-kaos" alt="Cute Kaos">
+        <img src="happy_kitty_blobs.gif" class="asset-kitty" alt="Kitty Blob">
+        <img src="eyes90.gif" class="asset-eyes" alt="Hidden Eyes">
+        <img src="pentagra.gif" class="asset-pentagra" alt="Hidden Pentagram">
+        <img src="437843yn4bmybu6n.webp" class="asset-webp-1" alt="Webp Link Glitch">
+
+        <main class="chat-main">
+            
+            <img src="chama_verde.gif" class="asset-chama" alt="Green Flame">
+
+            <div class="glitch-line-1"></div>
+
+            <div class="chat-box">
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">姐妹们，今天是我们认识9周年了，也是这个网站关停的日子，大家一个接一个的离开聊天室，我在大家不在的日子里成为了网站的管理员，也取得了不错的成绩，我要奔赴我人生的下一个阶段了，感谢大家一直以来的陪伴，姐妹们晚安了，你们永远存在于我的心里，这里是我们永远的秘密基地，你们在这片天地获得永生</span>
+                </div>
+
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">要是当时我能拦住心洁不让她去参加这个鬼活动就好了……</span>
+                </div>
+            </div>
+
+            <img src="chicks.png" class="asset-chicks" alt="Chicks Decor">
+            <img src="happybirthdaycake.gif" class="asset-cake" alt="Cake Decor">
+
+            <div class="glitch-line-2"></div>
+
+        </main>
+
+    </div>
+
+    <footer class="history-console-shutdown">
+        <div class="console-container-inner">
+            <div class="console-links"><a href="start.html">🚪 [E̷X̷I̷T̷_̷L̷I̷N̷K̷_̷D̷E̷S̷T̷R̷O̷Y̷E̷D̷]</a></div>
+            <div class="timeline-title"> (当前：chat10)：</div>
+            <div class="timeline-grid">
+                <a href="chat01.html" class="timeline-node">chat01</a>
+                <a href="chat02.html" class="timeline-node">chat02</a>
+                <a href="chat03.html" class="timeline-node">chat03</a>
+                <a href="chat04.html" class="timeline-node">chat04</a>
+                <a href="chat05.html" class="timeline-node">chat05</a>
+                <a href="chat06.html" class="timeline-node">chat06</a>
+                <a href="chat07.html" class="timeline-node">chat07</a>
+                <a href="chat08.html" class="timeline-node">chat08</a>
+                <a href="chat09.html" class="timeline-node">chat09</a>
+                <a href="chat10.html" class="timeline-node active">chat10</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

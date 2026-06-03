@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 闺蜜手拉手秘密基地 ★~ 聊天室 ~★ - chat04</title>
+    <style>
+        /* 全局蓝色像素星空背景 - 完美平铺满整个页面 */
+        * {
+            box-sizing: border-box;
+            cursor: url('https://cur.cursors-4u.net/symbols/sym-7/sym654.cur'), auto !important;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('35.gif');
+            background-repeat: repeat;
+            background-color: #0b1d3a; 
+            color: #002244;
+            font-family: "SimSun", "宋体", "MS Serif", sans-serif;
+            font-size: 13px;
+        }
+
+        /* 顶部温馨像素跑马灯 - 深蓝色调 */
+        marquee {
+            background: #1e3a8a;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 6px;
+            border-bottom: 2px solid #3b82f6;
+            font-size: 12px;
+        }
+
+        /* 聊天室复古横幅 - 经典像素蓝主调 */
+        header.chat-banner {
+            text-align: center;
+            padding: 20px 10px;
+            background: #e0f2fe;
+            border: 4px outset #2563eb;
+            margin: 15px 10px;
+            box-shadow: inset 3px 3px 0px #ffffff, 5px 5px 0px #1d4ed8;
+            position: relative;
+        }
+        .banner-decor {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .banner-decor img {
+            max-height: 45px;
+        }
+        header.chat-banner h1 {
+            margin: 10px 0 0 0;
+            font-size: 22px;
+            color: #1e3a8a;
+            text-shadow: 2px 2px 0px #ffffff, 4px 4px 0px #93c5fd;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            font-size: 12px;
+            color: #ffffff;
+            background: #2563eb;
+            display: inline-block;
+            padding: 3px 12px;
+            margin-top: 10px;
+            border: 1px dashed #ffffff;
+        }
+
+        /* 标准三栏经典复古布局容器 */
+        .main-container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 12px;
+            padding: 10px;
+        }
+
+        /* 侧边栏方框（左侧公告栏 & 右侧常客栏）- 主色调全面换蓝 */
+        aside {
+            width: 240px;
+            background: #f0fdfa; /* 清爽微青蓝 */
+            background-color: #f0f7ff;
+            border: 4px outset #2563eb;
+            padding: 12px;
+            box-shadow: 5px 5px 0px #1e3a8a;
+            flex-shrink: 0;
+        }
+        aside h3 {
+            font-size: 14px;
+            background: linear-gradient(to right, #1e40af, #3b82f6);
+            color: #fff;
+            margin-top: 0;
+            padding: 6px;
+            text-align: center;
+            border: 2px outset #60a5fa;
+        }
+        
+        /* 左边栏内部修饰 */
+        .sidebar-left p {
+            font-size: 12px;
+            line-height: 1.6;
+            color: #1e3a8a;
+            margin: 8px 0;
+        }
+        .doll-img {
+            display: block;
+            margin: 15px auto;
+            border: 2px ridge #3b82f6;
+            background: #ffffff;
+            padding: 5px;
+            max-width: 90px;
+        }
+
+        /* 右边栏常客列表 */
+        .sidebar-right .user-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar-right .user-list li {
+            padding: 6px 0;
+            font-size: 12px;
+            border-bottom: 1px dotted #93c5fd;
+            color: #1e3a8a;
+        }
+        .sidebar-right .user-list li.offline {
+            color: #94a3b8;
+            text-decoration: line-through;
+        }
+        .puffs-img {
+            display: block;
+            margin: 15px auto 0 auto;
+            max-width: 85px;
+        }
+
+        /* 中间核心交互内容流区 */
+        main.content-center {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            min-width: 0;
+        }
+
+        /* 复古精美蓝色主模块方框 */
+        .module-box {
+            background: #ffffff;
+            border: 4px outset #2563eb;
+            padding: 15px;
+            box-shadow: 5px 5px 0px #1e3a8a;
+        }
+        .module-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffffff;
+            background: #1e40af;
+            padding: 4px 12px;
+            border: 2px outset #60a5fa;
+            margin-bottom: 14px;
+            display: inline-block;
+        }
+
+        /* 纯正像素萌鸡缎带分割线 */
+        .pixel-line {
+            display: block;
+            width: 100%;
+            height: 30px;
+            background-image: url('chicks.png');
+            background-repeat: repeat-x;
+            margin: 5px 0;
+        }
+
+        /* 聊天气泡记录区域 */
+        .chat-log {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .chat-item {
+            font-size: 13px;
+            line-height: 1.6;
+            background: #f8fafc;
+            padding: 10px;
+            border: 1px dashed #3b82f6;
+        }
+        /* 交替气泡背景使用更淡的蓝色 */
+        .chat-item:nth-child(even) { 
+            background: #eff6ff; 
+        }
+        
+        /* 闺蜜特殊配色 */
+        .user-a { color: #d946ef; font-weight: bold; } /* 亮紫 */
+        .user-b { color: #94a3b8; font-weight: bold; } /* 灰 */
+        .user-c { color: #0ea5e9; font-weight: bold; } /* 天蓝 */
+        .user-d { color: #8b5cf6; font-weight: bold; } /* 树莓紫 */
+        .user-e { color: #b91c1c; font-weight: bold; background: #fef2f2; padding: 1px 4px; border: 1px dashed #ef4444; } /* 警告红色暗示黄纸线索 */
+        .chat-text { color: #0f172a; }
+
+        /* 相册展示区域方框 - 强化蓝色边框 */
+        .album-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #f0fdfa;
+            background-color: #eff6ff;
+            border: 2px inset #93c5fd;
+            padding: 15px;
+            text-align: center;
+        }
+        .photo-frame {
+            background: #ffffff;
+            border: 3px outset #2563eb;
+            padding: 10px;
+            box-shadow: 4px 4px 0px #93c5fd;
+            max-width: 280px;
+            margin-bottom: 10px;
+        }
+        .photo-frame img {
+            width: 100%;
+            max-width: 260px;
+            height: auto;
+            border: 1px solid #1e40af;
+        }
+        .photo-desc {
+            font-size: 12px;
+            color: #b91c1c;
+            font-weight: bold;
+            margin-top: 6px;
+            display: block;
+        }
+
+        /* 底部自由切换控制台方框 - 同样统一为蓝色调 */
+        footer.page-footer {
+            background: #cbd5e1;
+            background-color: #dbeafe;
+            border: 4px outset #2563eb;
+            padding: 15px;
+            margin: 20px 10px;
+            box-shadow: inset 2px 2px 0px #ffffff, 5px 5px 0px #1e3a8a;
+        }
+        .footer-nav {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .footer-nav a {
+            color: #1e40af;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        .date-switcher-title {
+            text-align: center;
+            font-size: 12px;
+            color: #1e3a8a;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .date-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 4px;
+        }
+        .date-btn {
+            display: block;
+            text-align: center;
+            padding: 6px 2px;
+            background: #ffffff;
+            border: 2px outset #bfdbfe;
+            color: #1e40af;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .date-btn:hover {
+            background-color: #3b82f6;
+            color: #ffffff;
+            border-style: inset;
+        }
+        .date-btn.current {
+            background-color: #1e40af;
+            color: #ffff00; 
+            border: 2px inset #172554;
+            pointer-events: none;
+        }
+
+        /* 响应式兼容性调整 */
+        @media (max-width: 850px) {
+            .main-container { flex-direction: column; }
+            aside { width: 100%; }
+            .date-grid { grid-template-columns: repeat(5, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部动态通知 -->
+    <marquee scrollamount="3" behavior="scroll" direction="left">
+        📢 提示：移动端快捷登录功能已成功上线！随时随地与好姐妹保持连线 🌟 远在旅途的用户e发来了前线快报...
+    </marquee>
+
+    <!-- 蓝色像素横幅 -->
+    <header class="chat-banner">
+        <div class="banner-decor">
+            <img src="daisy_button_blue_md_wht.gif" alt="小花">
+            <img src="wel24.gif" alt="欢迎光临">
+            <img src="daisy_button_blue_md_wht.gif" alt="小花">
+        </div>
+        <h1>✨ 欢迎来到有缘闺蜜手拉手聊天室 ✨</h1>
+        <div class="subtitle">历史记录归档节点：2017-08-17 (chat04)</div>
+    </header>
+
+    <!-- 主框架栏目群 -->
+    <div class="main-container">
+        
+        <!-- 左侧公告栏方框 -->
+        <aside class="sidebar-left">
+            <h3>房间公告栏</h3>
+            <img src="436.gif" class="doll-img" alt="跳舞小牛">
+            <p><b>最新版本：</b><br>📱 支持手机浏览器直接登录访问啦！</p>
+            <p><b>温馨提示：</b><br>出门旅游的姐妹注意安全，记得每天来小屋打卡报平安哦～</p>
+        </aside>
+
+        <!-- 中间内容流方框 -->
+        <main class="content-center">
+
+            <!-- 聊天快照方框 -->
+            <div class="module-box">
+                <div class="module-title">💬 历史聊天切片 (2017/8/17)</div>
+                <div class="chat-log">
+                    <div class="chat-item">
+                        <span class="user-a">用户 a：</span>
+                        <span class="chat-text">现在手机也能用这个聊天室了，好方便呀，输入自己的账号和密码就能用了！</span>
+                    </div>
+                    <div class="chat-item">
+                        <span class="user-c">用户 c：</span>
+                        <span class="chat-text">好久没看见@用户b 上线了，怎么回事呀，我们不是每天都说话吗</span>
+                    </div>
+                    <div class="chat-item">
+                        <span class="user-d">用户 d：</span>
+                        <span class="chat-text">应该是最近忙吧@用户c</span>
+                    </div>
+                    <div class="chat-item">
+                        <span class="user-e">用户 e：</span>
+                        <span class="chat-text">我现在在外面旅游，这边好有意思，还有我家没见过的习俗，两天前经过一个广场，看到有一群人在围着一口大锅唱歌跳舞，不过这舞有点怪怪的，我在现场捡到了一张黄纸</span>
+                    </div>
+                    <div class="chat-item">
+                        <span class="user-c">用户 c：</span>
+                        <span class="chat-text">@用户e 哇，好吓人，这个是封建迷信吧</span>
+                    </div>
+                    <div class="chat-item">
+                        <span class="user-a">用户 a：</span>
+                        <span class="chat-text">现在各种各样的聊天软件越来越多了，@用户b 应该是玩别的软件去了吧</span>
+                    </div>
+                    <div class="chat-item">
+                        <span class="user-c">用户 c：</span>
+                        <span class="chat-text">希望她不要忘了我们呀</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 像素分割线 -->
+            <div class="pixel-line"></div>
+
+            <!-- 旅行奇遇相册方框 -->
+            <div class="module-box">
+                <div class="module-title">📸 用户e的旅行动态图片传送</div>
+                <div class="album-section">
+                    <div class="photo-frame">
+                        <img src="fuzhi.png" onerror="this.onerror=null; this.src='https://via.placeholder.com/260/eff6ff/b91c1c?text=fuzhi.jpg';" alt="fuzhi.jpg">
+                        <span class="photo-desc">⚠ 用户e在广场上捡到的神秘黄纸</span>
+                    </div>
+                    <p style="margin: 5px 0 0 0; font-size: 11px; color: #64748b;">上传自：移动端掌上设备 | 地点：未明广场</p>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- 右侧常客列表方框 -->
+        <aside class="sidebar-right">
+            <h3>房间在线群员</h3>
+            <ul class="user-list">
+                <li>用户a (📱手机端)</li>
+                <li class="offline">用户b (离线)</li>
+                <li>用户c</li>
+                <li>用户d</li>
+                <li>用户e (🌍旅途中)</li>
+            </ul>
+            <img src="cute_kaos.gif" class="puffs-img" alt="光环小精灵">
+        </aside>
+
+    </div>
+
+    <!-- 底部时间穿梭控制台方框 -->
+    <footer class="page-footer">
+        <div class="footer-nav"><a href="start.html">💖 返回历史快照主页控制台</a></div>
+        <div class="date-switcher-title">👉 任意穿梭历史备份日志节点 (chat01-10)：</div>
+        <div class="date-grid">
+            <a href="chat01.html" class="date-btn">chat01</a>
+            <a href="chat02.html" class="date-btn">chat02</a>
+            <a href="chat03.html" class="date-btn">chat03</a>
+            <a href="chat04.html" class="date-btn current">chat04</a>
+            <a href="chat05.html" class="date-btn">chat05</a>
+            <a href="chat06.html" class="date-btn">chat06</a>
+            <a href="chat07.html" class="date-btn">chat07</a>
+            <a href="chat08.html" class="date-btn">chat08</a>
+            <a href="chat09.html" class="date-btn">chat09</a>
+            <a href="chat10.html" class="date-btn">chat10</a>
+        </div>
+    </footer>
+
+</body>
+</html>
