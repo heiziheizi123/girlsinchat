@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Ending</title>
+    <style>
+        /* 全黑背景，文字居中 */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace, "Microsoft YaHei";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            letter-spacing: 2px;
+        }
+
+        /* 打字机文本容器 */
+        .typing-container {
+            font-size: 24px;
+            line-height: 1.5;
+            border-right: 2px solid #ffffff; /* 光标效果 */
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        /* 光标闪烁动画 */
+        @keyframes blink {
+            from, to { border-color: transparent }
+            50% { border-color: #ffffff; }
+        }
+
+        .cursor-blink {
+            animation: blink 0.75s step-end infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="text-target" class="typing-container cursor-blink"></div>
+
+    <script>
+        // 需要打印的文字
+        const text = "啊，对了，我给你看一个东西……";
+        // 跳转的终点页面
+        const redirectUrl = "hidenchat234.html";
+        
+        const targetElement = document.getElementById("text-target");
+        let index = 0;
+        
+        // 打字机速度（每打一个字间隔的时间，单位：毫秒）
+        const typingSpeed = 150; 
+        // 文字打完后，停留多久再跳转（单位：毫秒）
+        const delayBeforeRedirect = 1500; 
+
+        function typeWriter() {
+            if (index < text.length) {
+                targetElement.textContent += text.charAt(index);
+                index++;
+                setTimeout(typeWriter, typingSpeed);
+            } else {
+                // 文字输入完毕，等待指定时间后跳转
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, delayBeforeRedirect);
+            }
+        }
+
+        // 页面加载完成后开始打印
+        window.onload = () => {
+            setTimeout(typeWriter, 500); // 稍微延迟一点点开始，给玩家一个心理准备
+        };
+    </script>
+</body>
+</html>

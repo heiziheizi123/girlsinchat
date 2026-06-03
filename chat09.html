@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ C̷R̷I̷T̷I̷C̷A̷L̷_̷O̷V̷E̷R̷F̷L̷O̷W̷ - chat09</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        /* 全局背景：bg_16.gif 平铺 */
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('bg_16.gif');
+            background-repeat: repeat;
+            background-color: #0b090a;
+            font-family: "SimSun", "宋体", sans-serif;
+            font-size: 13px;
+            color: #ffffff; /* 字体彻底调白 */
+            overflow-x: hidden;
+        }
+
+        /* 崩溃边缘的跑马灯 */
+        marquee {
+            background: rgba(244, 63, 94, 0.8);
+            color: #ffffff;
+            font-weight: bold;
+            padding: 8px;
+            font-size: 12px;
+            border-bottom: 3px dashed #ef4444;
+            text-shadow: 2px 2px 2px #000;
+        }
+
+        /* 头部大横幅：混合大理石 hys035_2.gif 与闪烁素材 */
+        header.chat-header {
+            max-width: 800px;
+            margin: 15px auto;
+            background-image: url('hys035_2.gif'), url('birthdayflashing.gif');
+            background-blend-mode: overlay;
+            border: 4px dashed #f43f5e;
+            padding: 50px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0px 0px 25px rgba(244, 63, 94, 0.6);
+        }
+
+        .header-title-container {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            border: 3px double #ffffff;
+            display: inline-block;
+            transform: rotate(-1.5deg);
+        }
+
+        header h1 {
+            margin: 5px 0;
+            font-size: 22px;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px #000000, -2px -2px 0px #f43f5e;
+        }
+
+        .timestamp-badge {
+            background: #ef4444;
+            color: #ffffff;
+            padding: 4px 12px;
+            font-size: 12px;
+            margin-top: 6px;
+            display: inline-block;
+            font-weight: bold;
+            border: 1px solid #fff;
+        }
+
+        /* 核心布局框架 */
+        .wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 10px;
+            position: relative;
+        }
+
+        /* 彻底透明的聊天主要视窗 */
+        main.chat-main {
+            width: 100%;
+            background: transparent; /* 核心修改：变成透明 */
+            border: 4px ridge #ffffff;
+            padding: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 崩坏线 */
+        .glitch-line-1 {
+            width: 100%;
+            height: 16px;
+            background-image: url('pinkpurline.gif');
+            background-repeat: repeat-x;
+            margin-bottom: 20px;
+        }
+        .glitch-line-2 {
+            width: 100%;
+            height: 16px;
+            background-image: url('LINE44.gif');
+            background-repeat: repeat-x;
+            margin-top: 20px;
+        }
+
+        /* 聊天文字区：确保透明背景下的可读性 */
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+            z-index: 10; /* 置于乱入图片之上 */
+        }
+
+        .message-row {
+            padding: 12px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.4);
+            line-height: 1.8;
+            background: rgba(0, 0, 0, 0.75); /* 加一层半透明全黑底色衬托白色字体 */
+            border-radius: 4px;
+        }
+
+        .msg-text {
+            color: #ffffff; /* 确保内容为白色 */
+            text-shadow: 1px 1px 3px #000000, -1px -1px 3px #000000; /* 四周加深黑色阴影 */
+            font-size: 14px;
+        }
+
+        /* 名字高亮（带像素阴影保证清晰） */
+        .name-c { color: #4ade80; font-weight: bold; text-shadow: 2px 2px 2px #000; } 
+        .name-e { color: #60a5fa; font-weight: bold; text-shadow: 2px 2px 2px #000; } 
+
+        /* ================= 素材疯狂乱入与堆叠 (恐怖+卡通日常大杂烩) ================= */
+        .asset-overflow-1 {
+            position: absolute;
+            top: 40px;
+            left: -50px;
+            width: 110px;
+            z-index: 1;
+            opacity: 0.6;
+        }
+        .asset-overflow-2 {
+            position: absolute;
+            bottom: 120px;
+            right: -40px;
+            width: 120px;
+            z-index: 5;
+        }
+        .asset-overflow-kaos {
+            position: absolute;
+            top: 45%;
+            left: 20px;
+            width: 160px;
+            z-index: 1; /* 垫在透明聊天框底下 */
+            opacity: 0.25;
+        }
+        .asset-chama {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 50px;
+            z-index: 6;
+        }
+        .asset-eyes {
+            position: absolute;
+            bottom: -30px;
+            left: -20px;
+            width: 80px;
+            z-index: 4;
+            opacity: 0.4;
+        }
+        .asset-pentagra {
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 90px;
+            z-index: 4;
+            opacity: 0.5;
+        }
+        .asset-cake {
+            position: absolute;
+            bottom: 10px;
+            left: 40%;
+            width: 60px;
+            z-index: 3;
+        }
+        .asset-strawberries {
+            position: absolute;
+            top: 15%;
+            right: -20px;
+            width: 55px;
+            z-index: 4;
+        }
+
+        /* ================= 损坏错位的日记卡片区 ================= */
+        .diary-card-box-final {
+            margin-top: 35px;
+            background: rgba(69, 10, 10, 0.85); /* 压抑的深红黑半透明 */
+            border: 3px dotted #ffffff;
+            padding: 20px;
+            position: relative;
+            z-index: 11;
+        }
+
+        .diary-card-title-final {
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 2px 2px 0px #ef4444;
+            text-decoration: line-through;
+        }
+
+        .diary-input-group {
+            margin: 12px 0;
+        }
+
+        .diary-pwd-input-final {
+            padding: 8px;
+            font-family: monospace;
+            background-color: #000000;
+            color: #ffffff;
+            border: 2px inset #ef4444;
+            width: 220px;
+            outline: none;
+        }
+
+        .diary-submit-btn-final {
+            padding: 8px 16px;
+            background: #ef4444;
+            color: #ffffff;
+            font-weight: bold;
+            border: 2px outset #ffffff;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .system-dead-text-final {
+            color: #fca5a5;
+            font-size: 12px;
+            margin-top: 10px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        /* 底部时光机控制台 */
+        footer.history-console-final {
+            max-width: 800px;
+            margin: 20px auto;
+            background-image: url('hys035_2.gif');
+            border: 4px outset #ffffff;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0px 4px 20px rgba(0,0,0,0.9);
+        }
+
+        .console-container-inner {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 12px;
+            border: 1px solid #ffffff;
+        }
+
+        .console-links a {
+            color: #ffffff;
+            text-decoration: line-through;
+            font-weight: bold;
+        }
+
+        .timeline-title {
+            font-size: 12px;
+            font-weight: bold;
+            margin: 10px 0 5px 0;
+            color: #f43f5e;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 4px;
+        }
+
+        .timeline-node {
+            display: block;
+            padding: 6px 0;
+            background: #27272a;
+            border: 2px outset #52525b;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .timeline-node.active {
+            background: #ef4444;
+            color: #ffffff;
+            border: 2px inset #ffffff;
+            pointer-events: none;
+            box-shadow: 0 0 8px #ef4444;
+        }
+
+        @media (max-width: 600px) {
+            .timeline-grid { grid-template-columns: repeat(5, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部崩溃滚动通知 -->
+    <marquee scrollamount="3">
+        我要回家我要回家我要回家我要回家我要回家我要回家我要回家我要回家我要回家我要回家我要回家我要回家我要回家我要回家我要回家我要回家我要回家
+    </marquee>
+
+    <!-- 带有恐怖与卡通交织的头部 -->
+    <header class="chat-header">
+        <!-- 乱入恐怖元素：旧版魔法阵 pentagra.gif -->
+        <img src="pentagra.gif" class="asset-pentagra" alt="Glitch Pentagram">
+        <!-- 乱入新卡通元素：cute_kaos_2.gif -->
+        <img src="cute_kaos_2.gif" style="position: absolute; left: 10px; top: 10px; width: 45px;" alt="Kaos Decor">
+
+        <div class="header-title-container">
+            <h1>安全屋</h1>
+            <div class="timestamp-badge">终止快照时间：2024/02/13 (chat09)</div>
+        </div>
+    </header>
+
+    <!-- 主框架 -->
+    <div class="wrapper">
+
+        <!-- 新素材引入：437843yn4bmybu6n_2.webp 强行叠在左侧 -->
+        <img src="437843yn4bmybu6n_2.webp" class="asset-overflow-1" alt="Webp Asset 1">
+        
+        <!-- 新素材引入：cute_kaos_2.gif 庞大底层半透明图层 -->
+        <img src="cute_kaos_2.gif" class="asset-overflow-kaos" alt="Glitch Background Kaos">
+
+        <!-- 乱入：闪烁草莓 glitterstrawberries.gif -->
+        <img src="glitterstrawberries.gif" class="asset-strawberries" alt="Strawberries Decor">
+
+        <!-- 中间透明聊天主体 -->
+        <main class="chat-main">
+            
+            <!-- 新素材引入：chama_verde.gif 绿火在右上角跳动 -->
+            <img src="chama_verde.gif" class="asset-chama" alt="Green Flame">
+            <!-- 乱入：小鸟像素 birds.gif -->
+            <img src="birds.gif" style="position: absolute; left: 20px; top: -15px; width: 40px;" alt="Birds">
+
+            <div class="glitch-line-1"></div>
+
+            <div class="chat-box">
+                <!-- 消息1 -->
+                <div class="message-row">
+                    <span class="name-c">用户 c：</span>
+                    <span class="msg-text">所以梦怡最后也走了是吗</span>
+                </div>
+
+                <!-- 消息2 -->
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">是的，她和我其实住的挺近的，就在对面小区，当天晚上我冲出家门，到了商场，只看见一地血</span>
+                </div>
+
+                <!-- 消息3 -->
+                <div class="message-row">
+                    <span class="name-c">用户 c：</span>
+                    <span class="msg-text">萱萱不要自责了，你已经尽了自己全力了</span>
+                </div>
+
+                <!-- 消息4 -->
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">唉！心洁你说为什么大家都一个个离开呢</span>
+                </div>
+
+                <!-- 消息5 -->
+                <div class="message-row">
+                    <span class="name-c">用户 c：</span>
+                    <span class="msg-text">没关系，我还陪着你呢</span>
+                </div>
+
+                <!-- 消息6 -->
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">心洁，马上就到你出发上学的日子了，一定要注意安全呀</span>
+                </div>
+
+                <!-- 消息7 -->
+                <div class="message-row">
+                    <span class="name-c">用户 c：</span>
+                    <span class="msg-text">好呀，谢谢萱萱关心</span>
+                </div>
+
+                <!-- 消息8 -->
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">学校考的怎么样了</span>
+                </div>
+
+                <!-- 消息9 -->
+                <div class="message-row">
+                    <span class="name-c">用户 c：</span>
+                    <span class="msg-text">我学校可以看见跨海大桥呢！已经合格啦，现在正在忙租宿舍的事</span>
+                </div>
+
+                <!-- 消息10 -->
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">那就好，等我有空了就来找你玩，哈哈</span>
+                </div>
+
+                <!-- 消息11 -->
+                <div class="message-row">
+                    <span class="name-c">用户 c：</span>
+                    <span class="msg-text">好呀好呀！</span>
+                </div>
+            </div>
+
+            <!-- 乱入：小鸡、蛋糕与旧版诡异眼睛的少量交织 -->
+            <img src="chicks.png" style="position: absolute; left: 15px; bottom: 80px; width: 50px; opacity: 0.7;" alt="Chicks">
+            <img src="happybirthdaycake.gif" class="asset-cake" alt="Cake Decor">
+            <img src="eyes90.gif" class="asset-eyes" alt="Glitch Eyes">
+
+            <div class="glitch-line-2"></div>
+
+
+            <!-- ================= 已经永久损毁的加密卡片区 ================= -->
+            <div class="diary-card-box-final">
+                <!-- 新素材引入：948532zr96alyx9q_2.webp 压在右侧 -->
+                <img src="948532zr96alyx9q_2.webp" class="asset-overflow-2" alt="Webp Asset 2">
+                <!-- 乱入：萌猫 happy_kitty_blobs.gif -->
+                <img src="happy_kitty_blobs.gif" style="position: absolute; left: -25px; bottom: 10px; width: 70px;" alt="Kitty">
+        </div>
+
+        </main>
+
+    </div>
+
+    <!-- 底部时光机控制台 -->
+    <footer class="history-console-final">
+        <div class="console-container-inner">
+            <div class="console-links"><a href="start.html">🚪 [返回控制台主页 - 链路逻辑已断开]</a></div>
+            <div class="timeline-title">📁 历史归档快照切片（当前：chat09）：</div>
+            <div class="timeline-grid">
+                <a href="chat01.html" class="timeline-node">chat01</a>
+                <a href="chat02.html" class="timeline-node">chat02</a>
+                <a href="chat03.html" class="timeline-node">chat03</a>
+                <a href="chat04.html" class="timeline-node">chat04</a>
+                <a href="chat05.html" class="timeline-node">chat05</a>
+                <a href="chat06.html" class="timeline-node">chat06</a>
+                <a href="chat07.html" class="timeline-node">chat07</a>
+                <a href="chat08.html" class="timeline-node">chat08</a>
+                <a href="chat09.html" class="timeline-node active">chat09</a>
+                <a href="chat10.html" class="timeline-node">chat10</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM_ERROR_TERMINAL</title>
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            color: #880000; /* 暗红色调，营造压抑感 */
+            font-family: "MS Gothic", "Courier New", monospace, "SimSun";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* 终端文本框 */
+        .terminal-container {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .message-text {
+            font-size: 18px;
+            line-height: 1.8;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-shadow: 0 0 5px #ff0000; /* 文字微弱红光霓虹效果 */
+            animation: textPulse 2s infinite ease-in-out;
+        }
+
+        /* 模拟老旧屏幕的微弱闪烁动画 */
+        @keyframes textPulse {
+            0% { opacity: 0.85; text-shadow: 0 0 4px #ff0000; }
+            50% { opacity: 1; text-shadow: 0 0 8px #ff3333; }
+            100% { opacity: 0.85; text-shadow: 0 0 4px #ff0000; }
+        }
+
+        /* 移动端自适应 */
+        @media (max-width: 640px) {
+            .message-text {
+                font-size: 15px;
+                line-height: 1.6;
+                letter-spacing: 1px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="terminal-container">
+        <p class="message-text">
+            可能你的记忆有误呢。<br>
+            不过没关系，你能帮我们到这里我就很开心了……
+        </p>
+    </div>
+
+    <script type="text/javascript">
+        // 页面加载完成后开始3秒倒计时
+        window.onload = function() {
+            setTimeout(function() {
+                window.location.href = "endingffff.html";
+            }, 3000); // 3000毫秒 = 3秒
+        };
+    </script>
+
+</body>
+</html>
