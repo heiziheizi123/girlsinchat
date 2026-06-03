@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMINAL - CONNECTING</title>
+    <style>
+        /* 基础重置：深邃全黑背景 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #050708; /* 极深接近全黑的底色 */
+            font-family: "Courier New", Courier, monospace, "Microsoft YaHei";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 负责绘制雪花的画布层 */
+        #snowCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none; /* 让鼠标无法拦截画布 */
+        }
+
+        /* 文字终端容器 */
+        .terminal-box {
+            position: relative;
+            z-index: 2; /* 浮在雪花上方 */
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* 打字机文本样式：荧光绿带有轻微神秘代码感 */
+        .typing-text {
+            font-size: 20px;
+            color: #38bdf8; /* 冷色调的科技蓝 */
+            letter-spacing: 2px;
+            white-space: nowrap;
+            display: inline-block;
+            text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+        }
+
+        /* 经典的光标闪烁效果 */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: #38bdf8;
+            margin-left: 4px;
+            animation: blink 0.8s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="snowCanvas"></canvas>
+
+    <div class="terminal-box">
+        <span id="textTarget" class="typing-text"></span><span class="cursor"></span>
+    </div>
+
+<script type="text/javascript">
+    /* ===================================================
+       1. 全屏黑色背景下的飘雪花动画效果 (HTML5 Canvas)
+       =================================================== */
+    const canvas = document.getElementById('snowCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    // 适配窗口缩放
+    window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    });
+
+    // 雪花粒子属性配置
+    const maxSnowflakes = 80;
+    const snowflakes = [];
+
+    for (let i = 0; i < maxSnowflakes; i++) {
+        snowflakes.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            radius: Math.random() * 2 + 1, // 细小的雪花颗粒
+            density: Math.random() * maxSnowflakes,
+            opacity: Math.random() * 0.5 + 0.2 // 带有一点半透明的微光
+        });
+    }
+
+    function drawSnow() {
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = '#ffffff';
+        
+        for (let i = 0; i < maxSnowflakes; i++) {
+            const f = snowflakes[i];
+            ctx.beginPath();
+            ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2, true);
+            ctx.fillStyle = `rgba(226, 232, 240, ${f.opacity})`; // 灰白雪花
+            ctx.fill();
+            
+            // 操控雪花下落轨迹（带点微风晃动）
+            f.y += Math.pow(f.radius, 0.5) * 0.6;
+            f.x += Math.sin(f.y / 30) * 0.3;
+
+            // 如果雪花飘出屏幕，重新在顶部生成
+            if (f.y > height) {
+                snowflakes[i] = {
+                    x: Math.random() * width,
+                    y: 0,
+                    radius: f.radius,
+                    density: f.density,
+                    opacity: f.opacity
+                };
+            }
+        }
+        requestAnimationFrame(drawSnow);
+    }
+    // 启动雪花景深
+    drawSnow();
+
+
+    /* ===================================================
+       2. 打字机效果、回退删除与延迟跳转控制系统
+       =================================================== */
+    const textTarget = document.getElementById('textTarget');
+    const fullText = "已完成链接，正在为你对接用户e（萱萱）";
+    
+    let index = 0;
+    const typeSpeed = 120;   // 打印速度（毫秒/字）
+    const eraseSpeed = 50;   // 删除速度（毫秒/字）
+    const holdTime = 1200;   // 字打完后停顿多久再开始删除
+    const waitTime = 2000;   // 删完后等待2秒再跳转
+
+    // 阶段一：模拟键盘输入
+    function typeEffect() {
+        if (index <= fullText.length) {
+            textTarget.innerText = fullText.substring(0, index);
+            index++;
+            setTimeout(typeEffect, typeSpeed);
+        } else {
+            // 输入完毕，停顿一下开始擦除
+            setTimeout(eraseEffect, holdTime);
+        }
+    }
+
+    // 阶段二：模拟整行回退键删除
+    function eraseEffect() {
+        if (index >= 0) {
+            textTarget.innerText = fullText.substring(0, index);
+            index--;
+            setTimeout(eraseEffect, eraseSpeed);
+        } else {
+            // 彻底删除为空后，等待 2 秒（2000ms）触发系统跳转
+            setTimeout(() => {
+                window.location.href = "next.html";
+            }, waitTime);
+        }
+    }
+
+    // 网页加载后自动进入系统对接序列
+    window.onload = () => {
+        setTimeout(typeEffect, 500); // 略微延时0.5秒后开始打印，体验更佳
+    };
+</script>
+
+</body>
+</html>

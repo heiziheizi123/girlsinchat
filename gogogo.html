@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESTORE_THE_TRUTH_SYSTEM</title>
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url('stary_night.gif');
+            background-repeat: repeat;
+            background-color: #000000;
+            color: #ff3333; /* 经典的垃圾恐怖网站高亮红字 */
+            font-family: "MS Gothic", "Courier New", monospace, "SimSun";
+            padding: 15px;
+            min-height: 100vh;
+        }
+
+        /* 顶部横幅区 */
+        .horror-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .blood-bar {
+            width: 100%;
+            max-width: 1000px;
+            height: auto;
+            display: block;
+            margin: 5px auto;
+        }
+
+        .site-title {
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px #ff0000;
+            margin: 10px 0;
+            line-height: 1.3;
+        }
+
+        .status-banner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .status-banner img {
+            max-height: 25px;
+            width: auto;
+        }
+
+        /* 核心网格布局：电脑端两列，手机端自动单列 */
+        .girls-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto 20px;
+        }
+
+        /* 女孩个人展示卡片 */
+        .girl-card {
+            background-color: rgba(15, 5, 5, 0.9);
+            border: 3px ridge #ff0000;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(255,0,0,0.3);
+        }
+
+        .girl-tag {
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #ff0000;
+            color: #000000;
+            display: inline-block;
+            padding: 2px 12px;
+            margin-bottom: 12px;
+        }
+
+        .girl-photo {
+            width: 100%;
+            max-width: 160px;
+            height: 160px;
+            object-fit: cover;
+            border: 2px solid #ff3333;
+            display: block;
+            margin: 0 auto 15px;
+            filter: grayscale(30%) contrast(110%);
+        }
+
+        /* 填写框与展示信息区域 */
+        .input-group {
+            text-align: left;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 12px;
+            border: 1px dashed #ff3333;
+        }
+
+        .info-row {
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-row label {
+            font-size: 13px;
+            color: #ff9999;
+            font-weight: bold;
+        }
+
+        /* 固定的无需填写的文本样式 */
+        .static-text {
+            width: 100%;
+            background-color: #110000;
+            border: 1px dashed #551111;
+            color: #888888;
+            padding: 6px 8px;
+            font-size: 14px;
+            font-family: "SimSun", monospace;
+        }
+
+        /* 垃圾复古输入框样式 */
+        .info-row input {
+            width: 100%;
+            background-color: #000000;
+            border: 1px solid #ff3333;
+            color: #ffffff;
+            padding: 6px 8px;
+            font-size: 14px; /* 移动端防自动缩放 */
+            font-family: "SimSun", monospace;
+            border-radius: 0;
+            -webkit-appearance: none;
+        }
+
+        .info-row input:focus {
+            outline: none;
+            background-color: #220000;
+            border-color: #ff0000;
+            box-shadow: 0 0 5px #ff0000;
+        }
+
+        /* 提示文字与引导图区域 */
+        .tip-box {
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto 20px;
+            font-size: 14px;
+            color: #ffaa00;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(255,170,0,0.3);
+            padding: 0 10px;
+        }
+
+        .tip-img {
+            display: block;
+            margin: 10px auto 0;
+            max-width: 100%;
+            width: 280px; /* 控制引导图大小，不让它铺满全屏 */
+            height: auto;
+            border: 1px solid #ffaa00;
+            box-shadow: 0 0 8px rgba(255, 170, 0, 0.4);
+        }
+
+        /* 底部系统提交区域 */
+        .submit-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .verify-btn {
+            background-color: #ff0000;
+            color: #000000;
+            border: 4px outset #ff6666;
+            padding: 12px 35px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: "MS Gothic", monospace;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            width: 100%;
+            max-width: 320px;
+            -webkit-appearance: none;
+        }
+
+        .verify-btn:active {
+            border-style: inset;
+            background-color: #b30000;
+        }
+
+        .warning-footer {
+            text-align: center;
+            font-size: 11px;
+            color: #555555;
+            letter-spacing: 1px;
+            line-height: 1.4;
+            padding: 0 10px;
+        }
+
+        /* ===================================================
+           📱 移动端自适应响应式代码
+           =================================================== */
+        @media (max-width: 640px) {
+            body {
+                padding: 10px;
+            }
+            .site-title {
+                font-size: 18px;
+            }
+            .girls-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            .girl-card {
+                padding: 12px;
+            }
+            .girl-photo {
+                max-width: 140px;
+                height: 140px;
+            }
+            .info-row {
+                flex-direction: row;
+                align-items: center;
+            }
+            .info-row label {
+                width: 110px;
+                flex-shrink: 0;
+                font-size: 12px;
+            }
+            .info-row input, .static-text {
+                padding: 4px 6px;
+                font-size: 14px;
+            }
+            .tip-box {
+                font-size: 12px;
+            }
+            .tip-img {
+                width: 220px; /* 移动端稍微缩小一点引导图，排版更精致 */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="horror-header">
+        <img src="blooddivider.gif" class="blood-bar" alt="divider">
+        <h1 class="site-title">数据恢复信道：请输入正确的追忆锚点</h1>
+        <div class="status-banner">
+            <img src="pentagra.gif" alt="icon">
+            <img src="754667r8n2u197zw.webp" alt="banner">
+            <img src="pentagra.gif" alt="icon">
+        </div>
+    </div>
+
+    <div class="girls-grid">
+
+        <div class="girl-card">
+            <div class="girl-tag">GIRL A</div>
+            <img src="girls1.jpg" class="girl-photo" alt="Girl A">
+            <div class="input-group">
+                <div class="info-row">
+                    <label>姓名</label>
+                    <input type="text" id="a_name" autocomplete="off" placeholder="??">
+                </div>
+                <div class="info-row">
+                    <label>出生年份</label>
+                    <div class="static-text">2008</div>
+                </div>
+                <div class="info-row">
+                    <label>相关事件 1</label>
+                    <input type="text" id="a_event1" autocomplete="off" placeholder="事件代码一...">
+                </div>
+                <div class="info-row">
+                    <label>相关事件 2</label>
+                    <input type="text" id="a_event2" autocomplete="off" placeholder="事件代码二...">
+                </div>
+            </div>
+        </div>
+
+        <div class="girl-card">
+            <div class="girl-tag">GIRL B</div>
+            <img src="girls2.jpg" class="girl-photo" alt="Girl B">
+            <div class="input-group">
+                <div class="info-row">
+                    <label>姓名</label>
+                    <input type="text" id="b_name" autocomplete="off" placeholder="??">
+                </div>
+                <div class="info-row">
+                    <label>出生年份</label>
+                    <div class="static-text">2007</div>
+                </div>
+                <div class="info-row">
+                    <label>相关事件</label>
+                    <input type="text" id="b_event" autocomplete="off" placeholder="输入相关代码...">
+                </div>
+            </div>
+        </div>
+
+        <div class="girl-card">
+            <div class="girl-tag">GIRL C</div>
+            <img src="girls3.jpg" class="girl-photo" alt="Girl C">
+            <div class="input-group">
+                <div class="info-row">
+                    <label>姓名</label>
+                    <input type="text" id="c_name" autocomplete="off" placeholder="??">
+                </div>
+                <div class="info-row">
+                    <label>出生年份</label>
+                    <div class="static-text">2007</div>
+                </div>
+                <div class="info-row">
+                    <label>相关事件</label>
+                    <input type="text" id="c_event" autocomplete="off" placeholder="输入相关代码...">
+                </div>
+            </div>
+        </div>
+
+        <div class="girl-card">
+            <div class="girl-tag">GIRL D</div>
+            <img src="girls4.jpg" class="girl-photo" alt="Girl D">
+            <div class="input-group">
+                <div class="info-row">
+                    <label>姓名</label>
+                    <input type="text" id="d_name" autocomplete="off" placeholder="??">
+                </div>
+                <div class="info-row">
+                    <label>生日</label>
+                    <input type="text" id="d_year" autocomplete="off" placeholder="YYYYMMDD">
+                </div>
+                <div class="info-row">
+                    <label>相关事件</label>
+                    <input type="text" id="d_event" autocomplete="off" placeholder="输入相关代码...">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="tip-box">
+        💡 提示：事件名可以通过网址栏查看，去掉.html
+        <img src="ex.png" class="tip-img" alt="网址栏提示参考图">
+    </div>
+
+    <div class="submit-container">
+        <button class="verify-btn" onclick="verifyData()">EXECUTE_RESTORATION()</button>
+    </div>
+
+    <div class="warning-footer">
+        [ SYSTEM NOTICE: ANY MISMATCH WILL FORCE DESTRUCTION OF CURRENT SESSION. ]
+    </div>
+
+<script type="text/javascript">
+    function verifyData() {
+        // 定义一个处理名字输入的辅助函数：彻底去除所有空格并转换为纯小写
+        function cleanName(val) {
+            return val.replace(/\s+/g, '').toLowerCase();
+        }
+
+        // 获取并清洗姓名输入（同时兼容中英文，英文自动变小写无空格）
+        const aName = cleanName(document.getElementById('a_name').value);
+        const bName = cleanName(document.getElementById('b_name').value);
+        const cName = cleanName(document.getElementById('c_name').value);
+        const dName = cleanName(document.getElementById('d_name').value);
+
+        // 获取代码和生日输入（照常剔除两端空格）
+        const aEvent1 = document.getElementById('a_event1').value.trim();
+        const aEvent2 = document.getElementById('a_event2').value.trim();
+        const bEvent = document.getElementById('b_event').value.trim();
+        const cEvent = document.getElementById('c_event').value.trim();
+        const dYear = document.getElementById('d_year').value.trim();
+        const dEvent = document.getElementById('d_event').value.trim();
+
+        // 姓名判定逻辑：中英文双轨道兼容
+        const isANameCorrect = (aName === "秦梦怡" || aName === "qinmengyi");
+        const isBNameCorrect = (bName === "刘欣怡" || bName === "liuxinyi");
+        const isCNameCorrect = (cName === "沈心洁" || cName === "shenxinjie");
+        const isDNameCorrect = (dName === "王雨桐" || dName === "wangyutong");
+
+        // GIRL A 的两个事件代码判定（不限顺序）
+        const isAEventCorrect = 
+            (aEvent1 === "newsaboutqin" && aEvent2 === "hidenchat") || 
+            (aEvent1 === "hidenchat" && aEvent2 === "newsaboutqin");
+
+        // 终极综合验证
+        const isPassed = 
+            isANameCorrect && isAEventCorrect &&
+            isBNameCorrect && (bEvent === "newsaboutliu") &&
+            isCNameCorrect && (cEvent === "kobenews") &&
+            isDNameCorrect && (dYear === "20080507") && (dEvent === "newsaboutyutong");
+
+        if (isPassed) {
+            window.location.href = "realending.html";
+        } else {
+            window.location.href = "endingtttt.html";
+        }
+    }
+</script>
+
+</body>
+</html>

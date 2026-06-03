@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 闺蜜秘密基地聊天室 🌟 - chat05</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        /* 使用图1做背景：红底粉点图 il_320xN.4474570171_27u4.jpg */
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('il_320xN.4474570171_27u4.jpg');
+            background-repeat: repeat;
+            font-family: "SimSun", "宋体", sans-serif;
+            font-size: 13px;
+            color: #4a2306;
+        }
+
+        /* 顶部滚动的红色警示通知 */
+        marquee {
+            background: #b91c1c;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 6px;
+            font-size: 12px;
+            border-bottom: 2px solid #ffffff;
+        }
+
+        /* 
+           复合型头部大框 
+           直接使用图2 istockphoto-1963414196-612x612.jpg 作为背景
+           设置 background-size: 100% 100% 强行拉伸，确保巧克力外框边缘能完美贴合方框
+        */
+        header.chat-header {
+            max-width: 1000px;
+            margin: 15px auto;
+            background-image: url('istockphoto-1963414196-612x612.jpg');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            padding: 40px 20px;
+            text-align: center;
+            /* 加上深色像素厚边框，更具复古质感 */
+            border: 5px outset #4a2306;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
+        }
+
+        /* 
+           去除之前的白色不透明背景，改为完全透明！
+           只用深色文字和像素描边，这样就能彻底露出底部的巧克力图案了 
+        */
+        .header-title-container {
+            background: transparent;
+            padding: 10px;
+            display: inline-block;
+        }
+
+        header h1 {
+            margin: 5px 0;
+            font-size: 26px;
+            color: #2b1100;
+            /* 使用白色文字描边，防止在深色巧克力块上看不清字 */
+            text-shadow: 
+                -2px -2px 0 #fff,  
+                 2px -2px 0 #fff,
+                -2px  2px 0 #fff,
+                 2px  2px 0 #fff,
+                 3px  3px 0px #b91c1c;
+        }
+
+        .decor-title-img {
+            max-height: 35px;
+            vertical-align: middle;
+            margin: 5px;
+        }
+
+        .timestamp-badge {
+            background: #2b1100;
+            color: #fff;
+            padding: 4px 12px;
+            font-size: 12px;
+            margin-top: 8px;
+            display: inline-block;
+            border: 1px dashed #fff;
+        }
+
+        /* 三栏式经典复古布局 */
+        .wrapper {
+            display: flex;
+            max-width: 1000px;
+            margin: 0 auto;
+            gap: 12px;
+            padding: 0 10px;
+        }
+
+        /* 左右两侧面板 */
+        aside {
+            width: 220px;
+            background: #fffdfb;
+            border: 3px outset #5c2d17;
+            padding: 12px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+
+        aside h3 {
+            font-size: 13px;
+            background: #5c2d17;
+            color: #fff;
+            margin: 0 0 10px 0;
+            padding: 5px;
+            text-align: center;
+        }
+
+        /* 装饰物排版样式 */
+        .decor-avatar {
+            display: block;
+            max-width: 70px;
+            margin: 10px auto;
+        }
+
+        .decor-side-gif {
+            display: block;
+            max-width: 100px;
+            margin: 15px auto;
+        }
+
+        /* 中间聊天区 */
+        main.chat-main {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.92);
+            border: 3px outset #5c2d17;
+            padding: 15px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+            min-width: 0;
+        }
+
+        /* 熊猫装饰分隔条 */
+        .panda-divider {
+            display: block;
+            width: 100%;
+            height: 25px;
+            background-image: url('hys035.gif');
+            background-repeat: repeat-x;
+            margin: 10px 0;
+        }
+
+        /* 饼干装饰分隔条 */
+        .biscuit-divider {
+            display: block;
+            width: 100%;
+            height: 25px;
+            background-image: url('biscuits2.gif');
+            background-repeat: repeat-x;
+            margin: 15px 0;
+        }
+
+        /* 聊天记录框 */
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message-row {
+            padding: 8px 10px;
+            border-bottom: 1px dotted #ccc;
+            line-height: 1.5;
+        }
+
+        /* 冲突点：突出的家长控诉框 */
+        .parent-alert {
+            background-color: #fee2e2 !important;
+            border: 2px ridge #ef4444 !important;
+            padding: 10px !important;
+            box-shadow: 2px 2px 0px #b91c1c;
+        }
+
+        /* 角色名字颜色标签 */
+        .name-a { color: #b45309; font-weight: bold; }
+        .name-c { color: #047857; font-weight: bold; }
+        .name-d-parent { color: #dc2626; font-weight: bold; font-size: 14px; }
+        .name-e { color: #4338ca; font-weight: bold; }
+        
+        .msg-text {
+            color: #000000;
+        }
+
+        /* 底部时光机控制台 */
+        footer.history-console {
+            max-width: 1000px;
+            margin: 20px auto;
+            background: #fdf2e9;
+            border: 4px outset #5c2d17;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .console-links a {
+            color: #5c2d17;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        .timeline-title {
+            font-size: 12px;
+            font-weight: bold;
+            margin: 10px 0 5px 0;
+            color: #5c2d17;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 4px;
+        }
+
+        .timeline-node {
+            display: block;
+            padding: 6px 0;
+            background: #fff;
+            border: 2px outset #5c2d17;
+            color: #5c2d17;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .timeline-node:hover {
+            background: #5c2d17;
+            color: #fff;
+            border-style: inset;
+        }
+
+        .timeline-node.active {
+            background: #e0f2fe;
+            color: #1d4ed8;
+            border: 2px inset #1d4ed8;
+            pointer-events: none;
+        }
+
+        @media (max-width: 800px) {
+            .wrapper { flex-direction: column; }
+            aside { width: 100%; }
+            .timeline-grid { grid-template-columns: repeat(5, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部突发状况提示滚动 -->
+    <marquee scrollamount="4">
+        ⚠ 警告：检测到违规训斥与账号异常行为，请理智发言。
+    </marquee>
+
+    <!-- 复合型头部横幅 (全面修复：图2作为全尺寸拉伸背景显现) -->
+    <header class="chat-header">
+        <div class="header-title-container">
+            <!-- 装饰图：巧克力文字条 -->
+            <img src="ChocolateAnim.gif" class="decor-title-img" alt="Chocolate Text">
+            <h1>🍫 少女们的私密甜点茶话会 🍫</h1>
+            <div class="timestamp-badge">备份归档时间轴：2020/10/13 (chat05)</div>
+        </div>
+    </header>
+
+    <!-- 页面核心布局框架 -->
+    <div class="wrapper">
+
+        <!-- 左侧辅助装饰栏 -->
+        <aside>
+            <h3>系统监控台</h3>
+            <!-- 装饰图：可可杯小牛 -->
+            <img src="2w.gif" class="decor-side-gif" alt="Cocoa Cup 牛">
+            <p style="font-size:12px; line-height:1.4; color:#5c2d17;">
+                <b>房间异动报告：</b><br>
+                自2017年起，长期未见【用户b】活动迹象。<br><br>
+                <b>本日追踪：</b><br>
+                【用户d】的基站IP出现严重偏差，说话语气产生断崖式剧变。
+            </p>
+        </aside>
+
+        <!-- 中间主要聊天视窗 -->
+        <main class="chat-main">
+            
+            <!-- 装饰熊猫彩条 -->
+            <div class="panda-divider"></div>
+
+            <div class="chat-box">
+                <!-- 消息1：突发质问 -->
+                <div class="message-row parent-alert">
+                    <span class="name-d-parent">🚨 用户d：</span>
+                    <span class="msg-text">这个聊天室是干啥的，你们一天天在聊什么啊！一群不务正业的人！我女儿和你们聊天成绩下滑了，真是害人不浅啊</span>
+                </div>
+
+                <!-- 消息2 -->
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">你是谁？家长吗？我们只是普通聊天呀</span>
+                </div>
+
+                <!-- 消息3 -->
+                <div class="message-row">
+                    <span class="name-c">用户 c：</span>
+                    <span class="msg-text">对面的家长先不要生气呀，发生什么了吗</span>
+                </div>
+
+                <!-- 消息4 -->
+                <div class="message-row">
+                    <span class="name-a">用户 a：</span>
+                    <span class="msg-text">怎么了怎么了？</span>
+                </div>
+
+                <!-- 消息5：控诉 -->
+                <div class="message-row parent-alert">
+                    <span class="name-d-parent">🚨 用户d：</span>
+                    <span class="msg-text">我的女儿就是被你们害了！网络交友风险大，我就应该听老师的！</span>
+                </div>
+
+                <!-- 消息6 -->
+                <div class="message-row">
+                    <span class="name-c">用户 c：</span>
+                    <span class="msg-text">我们所有的聊天内容都没有什么呀</span>
+                </div>
+
+                <!-- 消息7：寻找创始人 -->
+                <div class="message-row parent-alert">
+                    <span class="name-d-parent">🚨 用户d：</span>
+                    <span class="msg-text">这个聊天室创始人是谁！出来！整天聊有的没的，还有个小孩退出了，怎么搞的？你们都是谁，叫什么名字，住在哪里？</span>
+                </div>
+
+                <!-- 消息8 -->
+                <div class="message-row">
+                    <span class="name-a">用户 a：</span>
+                    <span class="msg-text">额…我们都不是坏人</span>
+                </div>
+
+                <!-- 消息9：袒露内心 -->
+                <div class="message-row parent-alert">
+                    <span class="name-d-parent">🚨 用户d：</span>
+                    <span class="msg-text">管你们有的没的，遇到事情不应该都和大人讲吗？我的女儿都不和我袒露内心了！</span>
+                </div>
+
+                <!-- 消息10：退坑宣言 -->
+                <div class="message-row parent-alert" style="border-bottom:3px solid #dc2626 !important;">
+                    <span class="name-d-parent">🚨 用户d：</span>
+                    <span class="msg-text">算了吧，我不会再让她使用电子设备了</span>
+                </div>
+            </div>
+
+            <!-- 装饰饼干心形条 -->
+            <div class="biscuit-divider"></div>
+
+        </main>
+
+        <!-- 右侧状态装饰栏 -->
+        <aside>
+            <h3>在编群员状态</h3>
+            <!-- 装饰图：小天使兔与粉红音符 -->
+            <img src="437843yn4bmybu6n.webp" class="decor-avatar" alt="Angel Bunny">
+            <img src="948532zr96alyx9q.webp" class="decor-avatar" alt="Music Cloud">
+            
+            <ul style="padding-left:15px; margin:5px 0; line-height:1.7;">
+                <li>用户a <span style="color:green;">[在线]</span></li>
+                <li style="color:#aaa; text-decoration:line-through;">用户b [离线/断联]</li>
+                <li>用户c <span style="color:green;">[在线]</span></li>
+                <li style="color:#dc2626; font-weight:bold;">用户d [家长锁定 🔒]</li>
+                <li>用户e <span style="color:green;">[在线]</span></li>
+            </ul>
+        </aside>
+
+    </div>
+
+    <!-- 底部控制台 -->
+    <footer class="history-console">
+        <div class="console-links"><a href="start.html">🚪 返回核心控制台总览主页</a></div>
+        <div class="timeline-title">📁 快照时间轴切片索引 (当前：chat05)：</div>
+        <div class="timeline-grid">
+            <a href="chat01.html" class="timeline-node">chat01</a>
+            <a href="chat02.html" class="timeline-node">chat02</a>
+            <a href="chat03.html" class="timeline-node">chat03</a>
+            <a href="chat04.html" class="timeline-node">chat04</a>
+            <a href="chat05.html" class="timeline-node active">chat05</a>
+            <a href="chat06.html" class="timeline-node">chat06</a>
+            <a href="chat07.html" class="timeline-node">chat07</a>
+            <a href="chat08.html" class="timeline-node">chat08</a>
+            <a href="chat09.html" class="timeline-node">chat09</a>
+            <a href="chat10.html" class="timeline-node">chat10</a>
+        </div>
+    </footer>
+
+</body>
+</html>

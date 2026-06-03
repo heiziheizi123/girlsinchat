@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 闺蜜秘密基地聊天室 🌟 - chat06</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        /* 使用背景：全屏平铺浅蓝雪花图 3763865q9104mlj8d.gif */
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('3763865q9104mlj8d.gif');
+            background-repeat: repeat;
+            font-family: "SimSun", "宋体", sans-serif;
+            font-size: 13px;
+            color: #1e3a8a;
+        }
+
+        /* 顶部滚动的冷色调提示通知 */
+        marquee {
+            background: #2563eb;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 6px;
+            font-size: 12px;
+            border-bottom: 2px solid #ffffff;
+        }
+
+        /* 头部横幅背景：蓝色城堡图 bluetex_aniwelc.gif */
+        header.chat-header {
+            max-width: 1000px;
+            margin: 15px auto;
+            background-image: url('bluetex_aniwelc.gif');
+            background-size: cover;
+            background-position: center;
+            border: 4px outset #3b82f6;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .header-title-container {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(2px);
+            padding: 12px;
+            border: 2px dashed #2563eb;
+            display: inline-block;
+        }
+
+        header h1 {
+            margin: 5px 0;
+            font-size: 22px;
+            color: #1d4ed8;
+            text-shadow: 1px 1px 0px #fff;
+        }
+
+        .decor-title-img {
+            max-height: 45px;
+            vertical-align: middle;
+            margin: 0 5px;
+        }
+
+        .timestamp-badge {
+            background: #1d4ed8;
+            color: #fff;
+            padding: 3px 10px;
+            font-size: 12px;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        /* 三栏式布局 */
+        .wrapper {
+            display: flex;
+            max-width: 1000px;
+            margin: 0 auto;
+            gap: 12px;
+            padding: 0 10px;
+        }
+
+        /* 左右面板 */
+        aside {
+            width: 220px;
+            background: #f8fafc;
+            border: 3px outset #3b82f6;
+            padding: 12px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+
+        aside h3 {
+            font-size: 13px;
+            background: #2563eb;
+            color: #fff;
+            margin: 0 0 10px 0;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .decor-avatar {
+            display: block;
+            max-width: 70px;
+            margin: 10px auto;
+        }
+
+        .decor-side-gif {
+            display: block;
+            max-width: 80px;
+            margin: 10px auto;
+        }
+
+        /* 中间主要聊天区 */
+        main.chat-main {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px outset #3b82f6;
+            padding: 15px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+            min-width: 0;
+        }
+
+        /* 蓝色星光装饰分割条 line5.gif */
+        .star-divider {
+            display: block;
+            width: 100%;
+            height: 15px;
+            background-image: url('line5.gif');
+            background-repeat: repeat-x;
+            margin: 12px 0;
+        }
+
+        /* 聊天气泡记录框 */
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .message-row {
+            padding: 6px 10px;
+            border-bottom: 1px dashed #bfdbfe;
+            line-height: 1.6;
+        }
+
+        /* 专属角色颜色标签 */
+        .name-a { color: #b45309; font-weight: bold; }
+        .name-c { color: #047857; font-weight: bold; }
+        .name-e { color: #1e40af; font-weight: bold; }
+        .at-highlight { background-color: #dbeafe; padding: 1px 4px; border-radius: 2px; font-weight: bold; }
+
+        /* 上传的现场照片样式 */
+        .uploaded-photo-container {
+            margin: 8px 0;
+            padding: 6px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .uploaded-photo {
+            max-width: 280px;
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid #94a3b8;
+        }
+
+        .photo-caption {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 4px;
+            text-align: center;
+        }
+
+        /* 复古嵌入式解密验证区样式（对照chat02卡片样式设计）
+        */
+        .secret-diary-box {
+            margin-top: 20px;
+            background: #eff6ff;
+            border: 2px dotted #2563eb;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .diary-title {
+            font-weight: bold;
+            color: #1e40af;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .password-form {
+            margin: 10px 0;
+        }
+
+        .pwd-input {
+            padding: 4px 8px;
+            font-family: "SimSun", "宋体", monospace;
+            font-size: 12px;
+            border: 2px inset #3b82f6;
+            width: 180px;
+            outline: none;
+            vertical-align: middle;
+        }
+
+        .pwd-submit-btn {
+            padding: 4px 12px;
+            background: #2563eb;
+            color: #fff;
+            font-family: "SimSun", "宋体", sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            border: 2px outset #3b82f6;
+            cursor: pointer;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+
+        .pwd-submit-btn:hover {
+            background: #1d4ed8;
+        }
+        
+        .pwd-submit-btn:active {
+            border-style: inset;
+        }
+
+        /* 验证提示反馈信息 */
+        .pwd-hint-msg {
+            margin-top: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            display: none; /* 默认隐藏 */
+        }
+
+        .hint-error {
+            color: #ef4444;
+        }
+
+        /* 成功跳转区域 */
+        .success-link-area {
+            display: none;
+            margin-top: 10px;
+            padding: 8px;
+            background: #dbeafe;
+            border: 1px dashed #1e40af;
+        }
+
+        .diary-redirect-btn {
+            color: #1e40af;
+            font-weight: bold;
+            text-decoration: underline;
+            font-size: 13px;
+        }
+
+        /* 底部时光机控制台 */
+        footer.history-console {
+            max-width: 1000px;
+            margin: 20px auto;
+            background: #eff6ff;
+            border: 4px outset #3b82f6;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .console-links a {
+            color: #2563eb;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        .timeline-title {
+            font-size: 12px;
+            font-weight: bold;
+            margin: 10px 0 5px 0;
+            color: #1e3a8a;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 4px;
+        }
+
+        .timeline-node {
+            display: block;
+            padding: 6px 0;
+            background: #fff;
+            border: 2px outset #3b82f6;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .timeline-node:hover {
+            background: #2563eb;
+            color: #fff;
+            border-style: inset;
+        }
+
+        .timeline-node.active {
+            background: #eff6ff;
+            color: #1e40af;
+            border: 2px inset #1e40af;
+            pointer-events: none;
+        }
+
+        @media (max-width: 800px) {
+            .wrapper { flex-direction: column; }
+            aside { width: 100%; }
+            .timeline-grid { grid-template-columns: repeat(5, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <marquee scrollamount="3">
+        当前房间人数：3人。冷寂的秋季，请珍惜陪伴在身边的伙伴。
+    </marquee>
+
+    <header class="chat-header">
+        <div class="header-title-container">
+            <img src="blueangelglobe.gif" class="decor-title-img" alt="Blue Angel Globe">
+            <h1>❄ 少女们的寂静星空茶话会 ❄</h1>
+            <div class="timestamp-badge">备份归档时间轴：2022/09/12 (chat06)</div>
+        </div>
+    </header>
+
+    <div class="wrapper">
+
+        <aside>
+            <h3>茶话会观测站</h3>
+            <img src="982477uqvc9qzqub.webp" class="decor-side-gif" alt="Crying Mushroom">
+            <p style="font-size:12px; line-height:1.4; color:#1e3a8a;">
+                <b>岁月流逝：</b><br>
+                <br><br>
+                <b>日常闲谈：</b><br>
+                大城市的升学压力，和远赴他乡的留学生涯交织在今夜。
+            </p>
+        </aside>
+
+        <main class="chat-main">
+            
+            <div class="star-divider"></div>
+
+            <div class="chat-box">
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">每次出一趟远门总会发生一点事。。。一个女孩从楼顶跳下来了</span>
+                    <br>
+                    <div class="uploaded-photo-container">
+                        <img src="people.jpg" class="uploaded-photo" alt="现场围观人群 (people.jpg)">
+                        <div class="photo-caption">📷 附件：people.jpg (现场聚集的人群)</div>
+                    </div>
+                </div>
+
+                <div class="message-row">
+                    <span class="name-a">用户 a：</span>
+                    <span class="msg-text">好吓人啊，我刚刚从补习班放学</span>
+                </div>
+
+                <div class="message-row">
+                    <span class="name-c">用户 c：</span>
+                    <span class="msg-text">啊？现在都11点了才放学吗？</span>
+                </div>
+
+                <div class="message-row">
+                    <span class="name-a">用户 a：</span>
+                    <span class="msg-text">是呀，要考上好高中，要努点力才行</span>
+                </div>
+
+                <div class="message-row">
+                    <span class="name-c">用户 c：</span>
+                    <span class="msg-text">果然是大城市，佩服佩服！</span>
+                </div>
+
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">哈哈，<span class="at-highlight">@用户c</span> 你不是要去留学了吗，我有个朋友也在准备去外面留学来着</span>
+                </div>
+
+                <div class="message-row">
+                    <span class="name-c">用户 c：</span>
+                    <span class="msg-text">是呀萱萱，<span class="at-highlight">@用户e</span>，我高中就出发，现在不用去学校好开心呀，明天是不是你生日呀，14岁生日快乐！</span>
+                </div>
+
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">沈宝你记错啦，是欣妍的生日啦，那个很早就退出聊天室的女孩 <span class="at-highlight">@用户b</span></span>
+                </div>
+
+                <div class="message-row">
+                    <span class="name-c">用户 c：</span>
+                    <span class="msg-text">话说d叫什么名字？我记得她以前提过</span>
+                </div>
+
+                <div class="message-row">
+                    <span class="name-a">用户 a：</span>
+                    <span class="msg-text">叫雨桐吧，我记得和e一个姓？</span>
+                </div>
+
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">对的</span>
+                </div>
+            </div>
+
+            <div class="star-divider"></div>
+
+            <div class="secret-diary-box">
+                <div class="diary-title">🔍 少女们的愿望</div>
+                <p style="margin:4px 0; color:#475569; font-size:12px;">提示：任一人名+出生年份</p>
+                
+                <div class="password-form">
+                    <input type="password" id="diaryPwdField" class="pwd-input" placeholder="输入破译密码...">
+                    <button class="pwd-submit-btn" onclick="submitDiaryVerify()">提交解密</button>
+                </div>
+
+                <div id="pwdHintArea" class="pwd-hint-msg hint-error">❌ 密码不匹配！</div>
+
+                <div id="successLinkArea" class="success-link-area">
+                    <span style="color:#16a34a; font-weight:bold;">🔓 解密成功！核心切片已就绪：</span><br><br>
+                    <a href="ooo.html" class="diary-redirect-btn">进入解密关联文件 ⏭️ ooo.html</a>
+                </div>
+            </div>
+
+        </main>
+
+        <aside>
+            <h3>在编群员</h3>
+            <img src="kii_t_w_012.gif" class="decor-avatar" alt="Golden Angel">
+            <img src="birds.gif" class="decor-side-gif" alt="Blue Bird Letter">
+            
+            <ul style="padding-left:15px; margin:5px 0; line-height:1.7; color:#1e3a8a;">
+                <li>用户a <span style="color:green;">[在线]</span></li>
+                <li style="color:#94a3b8; text-decoration:line-through;">用户b [退出]</li>
+                <li>用户c <span style="color:green;">[在线]</span></li>
+                <li style="color:#94a3b8; text-decoration:line-through;">用户d [退出]</li>
+                <li>用户e <span style="color:green;">[在线]</span></li>
+            </ul>
+        </aside>
+
+    </div>
+
+    <footer class="history-console">
+        <div class="console-links"><a href="start.html">🚪 返回核心控制台总览主页</a></div>
+        <div class="timeline-title">📁 快照时间轴切片索引 (当前：chat06)：</div>
+        <div class="timeline-grid">
+            <a href="chat01.html" class="timeline-node">chat01</a>
+            <a href="chat02.html" class="timeline-node">chat02</a>
+            <a href="chat03.html" class="timeline-node">chat03</a>
+            <a href="chat04.html" class="timeline-node">chat04</a>
+            <a href="chat05.html" class="timeline-node">chat05</a>
+            <a href="chat06.html" class="timeline-node active">chat06</a>
+            <a href="chat07.html" class="timeline-node">chat07</a>
+            <a href="chat08.html" class="timeline-node">chat08</a>
+            <a href="chat09.html" class="timeline-node">chat09</a>
+            <a href="chat10.html" class="timeline-node">chat10</a>
+        </div>
+    </footer>
+
+    <script>
+ function submitDiaryVerify() {
+    var inputVal = document.getElementById("diaryPwdField").value;
+    var hintArea = document.getElementById("pwdHintArea");
+    var successArea = document.getElementById("successLinkArea");
+
+    // 1. 在这里配置你的多个密码，用逗号隔开即可
+    var validPasswords = [
+        "wangyutong2008", 
+        "qinmengyi2008", 
+        "shenxinjie2007",
+        "wangxuanxuan2008",
+        "liuxinyi2007"
+
+    ];
+
+    // 2. 使用 includes 检查输入的密码是否在数组中
+    if (validPasswords.includes(inputVal)) {
+        // 密码正确
+        hintArea.style.display = "none";
+        successArea.style.display = "block";
+    } else {
+        // 密码错误
+        successArea.style.display = "none";
+        hintArea.style.display = "block";
+    }
+}
+    </script>
+
+</body>
+</html>

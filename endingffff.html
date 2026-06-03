@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>结局2：就差一点点</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 20px 10px;
+            /* 1. 复古Webcore波点背景 */
+            background-image: url('il_320xN.4474570171_27u4.jpg');
+            background-repeat: repeat;
+            background-size: 160px 160px;
+            font-family: 'Courier New', Courier, 'SimSun', 'MS Gothic', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 2. 巧克力边框主容器 */
+        .game-window {
+            width: 100%;
+            max-width: 580px;
+            background: rgba(255, 253, 240, 0.95); /* 复古温暖复古象牙白 */
+            border: 6px double #4a2306;
+            box-shadow: 8px 8px 0px #2b1403;
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        /* 巧克力碎屑饰条 */
+        .choco-banner {
+            width: 100%;
+            height: 45px;
+            background-image: url('istockphoto-1963414196-612x612.jpg');
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        .choco-banner.bottom {
+            background-position: bottom center;
+            transform: rotate(180deg);
+            margin-top: 15px;
+            margin-bottom: 0;
+        }
+
+        /* 3. 结局标题样式 */
+        .ending-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #bd1c42;
+            text-shadow: 2px 2px 0px #ffb3c6;
+            border-bottom: 3px dashed #bd1c42;
+            padding-bottom: 10px;
+            margin: 10px 0 20px 0;
+            letter-spacing: 2px;
+        }
+
+        /* 4. 动态漂浮的像素素材装饰 */
+        .decor-bunny {
+            position: absolute;
+            top: -55px;
+            left: -15px;
+            width: 75px;
+            height: auto;
+            filter: drop-shadow(3px 3px 0px rgba(0,0,0,0.2));
+            animation: floatY 3s ease-in-out infinite alternate;
+            z-index: 10;
+        }
+
+        .decor-music {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 45px;
+            height: auto;
+            animation: pulse 1.5s ease-in-out infinite alternate;
+        }
+
+        .decor-shroom {
+            display: block;
+            width: 65px;
+            height: auto;
+            margin: 0 auto 15px auto;
+            animation: bounce 2s infinite;
+        }
+
+        /* 5. 剧本文字排版 */
+        .content-box {
+            text-align: center;
+            padding: 10px 5px;
+        }
+
+        .main-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #2b1403;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .disclaimer {
+            font-size: 13px;
+            color: #7a6252;
+            background: #fff0f3;
+            border: 1px solid #ffccd5;
+            padding: 6px 12px;
+            display: inline-block;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        /* 分割线 */
+        .pixel-hr {
+            border: none;
+            border-top: 4px dotted #4a2306;
+            margin: 25px 0;
+        }
+
+        /* 6. 赞助区域 */
+        .sponsor-section {
+            text-align: center;
+        }
+
+        .sponsor-tip {
+            font-size: 15px;
+            color: #d9534f;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: inline-block;
+            background: #fcf8e3;
+            border-left: 5px solid #f0ad4e;
+            padding: 8px 15px;
+        }
+
+        /* 7. 三张图/二维码卡片排版 */
+        .qr-group {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .qr-item {
+            background: #ffffff;
+            border: 3px solid #4a2306;
+            box-shadow: 4px 4px 0px #4a2306;
+            padding: 10px;
+            border-radius: 8px;
+            width: 140px;
+            transition: transform 0.2s;
+        }
+        .qr-item:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #4a2306;
+        }
+
+        .qr-image {
+            width: 100%;
+            height: 110px;
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .qr-label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #4a2306;
+            margin-top: 8px;
+            display: block;
+            text-align: center;
+        }
+
+        /* 8. 复古Webcore动画效果 */
+        @keyframes floatY {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-10px) rotate(5deg); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        /* 移动端响应式适配 */
+        @media (max-width: 480px) {
+            .game-window { padding: 16px; margin-top: 50px; }
+            .main-text { font-size: 16px; }
+            .qr-group { justify-content: center; }
+            .qr-item { width: 42%; }
+            .decor-bunny { width: 65px; top: -45px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-window">
+        <img class="decor-bunny" src="437843yn4bmybu6n.webp" alt="pixel bunny">
+        <img class="decor-music" src="948532zr96alyx9q.webp" alt="pixel music">
+
+        <div class="choco-banner"></div>
+
+        <div class="ending-title">◆ 结局2：就差一点点 ◆</div>
+
+        <div class="content-box">
+            <img class="decor-shroom" src="982477uqvc9qzqub.webp" alt="pixel mushroom">
+            
+            <div class="main-text">“再加把劲，真相就浮出水面了呢。”</div>
+            <div class="disclaimer">情节纯属虚构，祝您生活愉快！</div>
+        </div>
+
+        <div class="pixel-hr"></div>
+
+        <div class="sponsor-section">
+            <div class="sponsor-tip">🥤 如果喜欢该作品，可以赞助作者大大一杯矿泉水!</div>
+            
+            <div class="qr-group">
+                <div class="qr-item">
+                    <img class="qr-image" src="wechat.jpg" alt="微信">
+                    <span class="qr-label">微信</span>
+                </div>
+                <div class="qr-item">
+                    <img class="qr-image" src="zanshang.jpg" alt="赞赏">
+                    <span class="qr-label">赞赏</span>
+                </div>
+                <div class="qr-item">
+                    <img class="qr-image" src="xiaohongshu.jpg" alt="小红书">
+                    <span class="qr-label">小红书</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="choco-banner bottom"></div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天室历史备份 - chat01</title>
+    <style>
+        /* 基础样式：纯白极简 */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #1a1a1a;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 1. Banner 区域 */
+        header.banner {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e8e8e8;
+            padding: 25px 20px;
+            text-align: center;
+        }
+        .banner h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+            color: #000000;
+        }
+        .banner .subtitle {
+            font-size: 13px;
+            color: #8c8c8c;
+            margin-top: 6px;
+        }
+
+        /* 2. 中间三栏结构 */
+        .main-container {
+            display: flex;
+            flex: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 左栏：仅保留房间基本信息 */
+        .sidebar-left {
+            width: 200px;
+            border-right: 1px solid #e8e8e8;
+            padding: 25px 20px;
+            font-size: 13px;
+        }
+        .sidebar-left h3 {
+            font-size: 14px;
+            margin-top: 0;
+            color: #262626;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 8px;
+        }
+        .sidebar-left p {
+            margin: 12px 0;
+            color: #595959;
+        }
+
+        /* 主内容区域：聊天记录快照 */
+        main.content-center {
+            flex: 1;
+            padding: 25px 30px;
+            background-color: #ffffff; /* 恢复纯白，去除微灰 */
+        }
+        .chat-timeline {
+            font-size: 12px;
+            color: #bfbfbf;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .chat-log {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .chat-item {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .chat-user {
+            font-weight: 600;
+            margin-right: 8px;
+            color: #262626;
+        }
+        .chat-text {
+            color: #262626;
+            word-break: break-all;
+        }
+
+        /* 右栏：历史在线成员 */
+        .sidebar-right {
+            width: 200px;
+            border-left: 1px solid #e8e8e8;
+            padding: 25px 20px;
+            font-size: 13px;
+        }
+        .sidebar-right h3 {
+            font-size: 14px;
+            margin-top: 0;
+            color: #262626;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 8px;
+        }
+        .user-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .user-list li {
+            padding: 8px 0;
+            color: #595959;
+        }
+
+        /* 3. Footer 区域：自由切换日期 */
+        footer.page-footer {
+            background-color: #ffffff;
+            border-top: 1px solid #e8e8e8;
+            padding: 30px 20px;
+        }
+        .footer-nav {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .footer-nav a {
+            color: #1890ff;
+            text-decoration: none;
+        }
+        .footer-nav a:hover {
+            text-decoration: underline;
+        }
+
+        .date-switcher-title {
+            text-align: center;
+            font-size: 13px;
+            color: #8c8c8c;
+            margin-bottom: 15px;
+        }
+        .date-grid {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+        }
+        .date-btn {
+            display: block;
+            text-align: center;
+            padding: 8px 4px;
+            background: #ffffff;
+            border: 1px solid #d9d9d9;
+            color: #262626;
+            text-decoration: none;
+            font-size: 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .date-btn:hover {
+            background-color: #000000;
+            color: #ffffff;
+            border-color: #000000;
+        }
+        /* 当前页面的独立样式 */
+        .date-btn.current {
+            background-color: #f5f5f5;
+            color: #bfbfbf;
+            border-color: #e8e8e8;
+            pointer-events: none;
+        }
+
+        /* 移动端响应式兼容 */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .sidebar-left, .sidebar-right {
+                width: 100%;
+                border: none;
+                border-bottom: 1px solid #e8e8e8;
+            }
+            .date-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="banner">
+        <h1>网页聊天室历史备份日志</h1>
+        <div class="subtitle">历史记录节点：2014-06-15 (chat01)</div>
+    </header>
+
+    <div class="main-container">
+        
+        <aside class="sidebar-left">
+            <h3>房间信息</h3>
+            <p><strong>名称：</strong>找闺蜜，年龄相符的进</p>
+            <p><strong>类型：</strong>全匿名临时房间</p>
+            <p><strong>状态：</strong>已随网页关停归档</p>
+        </aside>
+
+        <main class="content-center">
+            <div class="chat-timeline">—— 2014-08-15 原始对话记录 ——</div>
+            
+            <div class="chat-log">
+                <div class="chat-item">
+                    <span class="chat-user">用户A:</span>
+                    <span class="chat-text">有人在吗？今天我又是第一个到。今天多了好多人呀，我们的大家庭渐渐热闹了呢</span>
+                </div>
+                <div class="chat-item">
+                    <span class="chat-user">用户B:</span>
+                    <span class="chat-text">刚刚放学。上学好累啊我不想上学啊啊啊。</span>
+                </div>
+                <div class="chat-item">
+                    <span class="chat-user">用户C:</span>
+                    <span class="chat-text">我也是。@用户B，你们的老家在哪里呀。还有大家分别多大呀。我今年7岁</span>
+                </div>
+                <div class="chat-item">
+                    <span class="chat-user">用户D:</span>
+                    <span class="chat-text">我今年刚满6岁。姐姐们。</span>
+                </div>
+                <div class="chat-item">
+                    <span class="chat-user">用户E:</span>
+                    <span class="chat-text">欢迎新来的妹妹。别怕，年龄相符的才能到这里。我也7岁</span>
+                </div>
+                <div class="chat-item">
+                    <span class="chat-user">用户B:</span>
+                    <span class="chat-text">欢迎大家呀！！！我们交朋友吧</span>
+                </div>
+            </div>
+        </main>
+
+        <aside class="sidebar-right">
+            <h3>当时在线成员 (5)</h3>
+            <ul class="user-list">
+                <li>用户A</li>
+                <li>用户B</li>
+                <li>用户C</li>
+                <li>用户D</li>
+                <li>用户E</li>
+            </ul>
+        </aside>
+
+    </div>
+
+    <footer class="page-footer">
+        <div class="footer-nav">
+            <a href="start.html">← 返回历史快照主页</a>
+        </div>
+
+        <div class="date-switcher-title">自由切换查看其他历史日志：</div>
+        <div class="date-grid">
+            <a href="chat01.html" class="date-btn current">chat01</a>
+            <a href="chat02.html" class="date-btn">chat02</a>
+            <a href="chat03.html" class="date-btn">chat03</a>
+            <a href="chat04.html" class="date-btn">chat04</a>
+            <a href="chat05.html" class="date-btn">chat05</a>
+            <a href="chat06.html" class="date-btn">chat06</a>
+            <a href="chat07.html" class="date-btn">chat07</a>
+            <a href="chat08.html" class="date-btn">chat08</a>
+            <a href="chat09.html" class="date-btn">chat09</a>
+            <a href="chat10.html" class="date-btn">chat10</a>
+        </div>
+    </footer>
+
+</body>
+</html>

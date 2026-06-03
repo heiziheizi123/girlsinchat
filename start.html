@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统终端 - 档案检索</title>
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 营造解谜/终端氛围的暗色背景 */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #12161a;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* 搜索核心区域容器 */
+        .search-container {
+            width: 100%;
+            max-width: 580px;
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* 检索系统的大标题 */
+        .search-title {
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #94a3b8;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(148, 163, 184, 0.2);
+        }
+
+        /* 搜索框包裹器 */
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 30px;
+            padding: 5px 10px 5px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus-within {
+            border-color: #64748b;
+            box-shadow: 0 4px 25px rgba(148, 163, 184, 0.15);
+        }
+
+        /* 输入框样式 */
+        .search-input {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: #f8fafc;
+            font-size: 16px;
+            height: 45px;
+            padding-right: 10px;
+        }
+
+        .search-input::placeholder {
+            color: #475569;
+        }
+
+        /* 搜索按钮 */
+        .search-button {
+            background-color: #334155;
+            color: #f1f5f9;
+            border: none;
+            padding: 0 25px;
+            height: 42px;
+            border-radius: 21px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .search-button:hover {
+            background-color: #475569;
+        }
+
+        /* 搜索结果展示面板 */
+        .result-panel {
+            display: none;
+            margin-top: 30px;
+            background-color: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: left;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideDown 0.4s ease-out;
+        }
+
+        .result-header {
+            font-size: 12px;
+            color: #10b981;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .result-title {
+            font-size: 18px;
+            color: #f8fafc;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .result-meta {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        /* 按钮组包裹器（用于应对多网页跳转） */
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        /* 跳转确认按钮 */
+        .jump-button {
+            display: inline-block;
+            background-color: #059669;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .jump-button:hover {
+            background-color: #10b981;
+        }
+
+        /* 错误/未找到提示样式 */
+        .error-message {
+            display: none;
+            margin-top: 20px;
+            color: #ef4444;
+            font-size: 14px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* 下方的游玩提示小字 */
+        .search-tip {
+            margin-top: 30px;
+            font-size: 13px;
+            color: #64748b;
+            letter-spacing: 0.5px;
+        }
+
+        /* 下方 Chat 导航栏样式 */
+        .chat-nav {
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 1px dashed #2d3748;
+        }
+
+        .chat-nav-title {
+            font-size: 13px;
+            color: #4a5568;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .chat-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .chat-btn {
+            display: inline-block;
+            background-color: #1a202c;
+            border: 1px solid #2d3748;
+            color: #a0aec0;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: monospace;
+            transition: all 0.2s ease;
+        }
+
+        .chat-btn:hover {
+            background-color: #2d3748;
+            color: #f7fafc;
+            border-color: #4a5568;
+            transform: translateY(-1px);
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="search-container">
+    <div class="search-title">DATABASE SEARCH</div>
+
+    <!-- 搜索输入框 -->
+    <div class="search-box">
+        <input type="text" id="keywords" class="search-input" placeholder="尝试搜索一些日期与人名吧！" autocomplete="off">
+        <button type="button" class="search-button" onclick="executeSearch()">检索</button>
+    </div>
+
+    <!-- 错误提示栏 -->
+    <div id="errorBox" class="error-message">❌ 未检索到相关档案，请尝试其他关键词。</div>
+
+    <!-- 检索结果显示区 -->
+    <div id="resultPanel" class="result-panel">
+        <div class="result-header">SUCCESS // 已找到匹配目标档案</div>
+        <div id="resTitle" class="result-title">档案名称</div>
+        <div id="resMeta" class="result-meta">关联目标文件</div>
+        
+        <!-- 动态按钮组存放区 -->
+        <div id="btnGroup" class="btn-group">
+            <!-- 按钮由JS动态生成 -->
+        </div>
+    </div>
+
+    <p class="search-tip">※ 为保证游玩过程顺利，建议单开一个网页来进行搜索</p>
+
+    <!-- chat01.html - chat10.html 导航栏 -->
+    <div class="chat-nav">
+        <div class="chat-nav-title">拦截的通讯日志备份 // intercepted logs</div>
+        <div class="chat-grid">
+            <a href="chat01.html" target="_blank" class="chat-btn">CHAT-01</a>
+            <a href="chat02.html" target="_blank" class="chat-btn">CHAT-02</a>
+            <a href="chat03.html" target="_blank" class="chat-btn">CHAT-03</a>
+            <a href="chat04.html" target="_blank" class="chat-btn">CHAT-04</a>
+            <a href="chat05.html" target="_blank" class="chat-btn">CHAT-05</a>
+            <a href="chat06.html" target="_blank" class="chat-btn">CHAT-06</a>
+            <a href="chat07.html" target="_blank" class="chat-btn">CHAT-07</a>
+            <a href="chat08.html" target="_blank" class="chat-btn">CHAT-08</a>
+            <a href="chat09.html" target="_blank" class="chat-btn">CHAT-09</a>
+            <a href="chat10.html" target="_blank" class="chat-btn">CHAT-10</a>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // 关键词数据库映射结构
+    const searchDatabase = {
+        "2023/4/14": {
+            title: "【加密通讯】未公开的隐藏聊天记录备份",
+            meta: "关联目标文件：hidenchat.html",
+            links: [
+                { name: "确认：解密该档案 >>", url: "hidenchat.html" }
+            ]
+        },
+        "沈心洁": {
+            title: "【神户新闻】中国留学生海岸遇难事件调查报告",
+            meta: "关联目标文件：kobenews.html",
+            links: [
+                { name: "确认：解密该档案 >>", url: "kobenews.html" }
+            ]
+        },
+        "2017/8/15": {
+            title: "【社会新闻】关于小刘女童案惨剧的始末报道",
+            meta: "关联目标文件：newsaboutliu.html",
+            links: [
+                { name: "确认：解密该档案 >>", url: "newsaboutliu.html" }
+            ]
+        },
+        "2023/5/19": {
+            title: "【豆黑新闻】15岁少女小秦坠楼与校园霸凌追踪调查",
+            meta: "关联目标文件：newsaboutqin.html",
+            links: [
+                { name: "确认：解密该档案 >>", url: "newsaboutqin.html" }
+            ]
+        },
+        "2020/10/13": {
+            title: "【白字新闻】12岁女孩小宇彤自杀遗书事件深度复盘",
+            meta: "关联目标文件：newsaboutyutong.html",
+            links: [
+                { name: "确认：解密该档案 >>", url: "newsaboutyutong.html" }
+            ]
+        },
+        "无上圣佛": {
+            title: "【检索结果】已找到与关键词相关的独立数据资料",
+            meta: "检测到 2 份相关的独立关联文件：familychat.html / newsfo.html",
+            links: [
+                { name: "📁 资料一：家庭对话记录 (familychat.html)", url: "familychat.html" },
+                { name: "📰 资料二：相关新闻报道 (newsfo.html)", url: "newsfo.html" }
+            ]
+        }
+    };
+
+    function executeSearch() {
+        const query = document.getElementById("keywords").value.trim();
+        const resultPanel = document.getElementById("resultPanel");
+        const errorBox = document.getElementById("errorBox");
+        const btnGroup = document.getElementById("btnGroup");
+
+        // 重置状态
+        resultPanel.style.display = "none";
+        errorBox.style.display = "none";
+        btnGroup.innerHTML = ""; 
+
+        if (query === "") {
+            alert("请输入检索关键词。");
+            return;
+        }
+
+        if (searchDatabase.hasOwnProperty(query)) {
+            const data = searchDatabase[query];
+            
+            // 写入文本内容
+            document.getElementById("resTitle").innerText = data.title;
+            document.getElementById("resMeta").innerText = data.meta;
+
+            // 动态构建自主跳转按钮
+            data.links.forEach(linkInfo => {
+                const aTag = document.createElement("a");
+                aTag.href = linkInfo.url;
+                aTag.target = "_blank";
+                aTag.className = "jump-button";
+                aTag.innerText = linkInfo.name;
+                btnGroup.appendChild(aTag);
+            });
+
+            // 显示结果卡片
+            resultPanel.style.display = "block";
+        } else {
+            errorBox.style.display = "block";
+        }
+    }
+
+    // 监听回车键
+    document.getElementById("keywords").addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            executeSearch();
+        }
+    });
+</script>
+
+</body>
+</html>

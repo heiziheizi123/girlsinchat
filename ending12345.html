@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>结局1 - 少女们的倾听者</title>
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 1. 治愈系背景：使用星星平铺图，并加上温暖的渐变衬托 */
+        body {
+            background-image: url('2367834cs3xzws7l4.webp');
+            background-repeat: repeat;
+            background-color: #fff5f7;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Microsoft YaHei", sans-serif;
+            color: #6a5257; /* 采用温柔的深可可粉色代替死黑，更有质感 */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* 主视窗容器 */
+        .main-card {
+            width: 100%;
+            max-width: 580px;
+            background-color: rgba(255, 255, 255, 0.92);
+            border: 3px double #ffb7ca; /* 双线复古粉色边框 */
+            border-radius: 16px;
+            padding: 35px 25px;
+            box-shadow: 0 8px 24px rgba(255, 183, 202, 0.3);
+            text-align: center;
+            position: relative;
+            background-image: linear-gradient(rgba(255, 235, 240, 0.4) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255, 235, 240, 0.4) 1px, transparent 1px);
+            background-size: 20px 20px; /* 隐约的温馨格子底纹 */
+        }
+
+        /* 装饰用的小饰品挂件 */
+        .deco-gif {
+            position: absolute;
+            top: -25px;
+            width: 50px;
+            height: auto;
+        }
+        .deco-left { left: 20px; }
+        .deco-right { right: 20px; }
+
+        /* 标题设计 */
+        .title-badge {
+            display: inline-block;
+            background-color: #ffccd8;
+            color: #b34a66;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 4px 14px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .main-title {
+            font-size: 24px;
+            color: #b34a66;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+        }
+
+        /* 文本展示区 */
+        .content-box {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px dashed #ffccd8;
+            border-radius: 10px;
+            padding: 20px;
+            line-height: 1.8;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        .disclaimer {
+            font-size: 13px;
+            color: #a68c91;
+            margin-top: 10px;
+            border-top: 1px solid #ffe6eb;
+            padding-top: 10px;
+        }
+
+        /* 赞助说明字样 */
+        .support-hint {
+            font-size: 14px;
+            font-weight: bold;
+            color: #d46a84;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        /* 三张图片排列的网格系统 */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        /* 每一个图片卡片单元 */
+        .media-item {
+            background-color: #ffffff;
+            border: 1px solid #ffe1e7;
+            border-radius: 8px;
+            padding: 8px;
+            box-shadow: 0 2px 8px rgba(255, 183, 202, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .media-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .media-img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .media-label {
+            font-size: 12px;
+            color: #8c7378;
+            font-weight: 500;
+        }
+
+        /* 底部中央跳动的小布丁狗装饰 */
+        .footer-deco {
+            margin-top: 25px;
+            display: inline-block;
+            width: 40px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-card">
+    <img src="353.gif" class="deco-gif deco-left" alt="deco">
+    <img src="puffs.gif" class="deco-gif deco-right" alt="deco">
+
+    <div class="title-badge">ENDING 01</div>
+    <h1 class="main-title">《 少女们的倾听者 》</h1>
+
+    <div class="content-box">
+        <p>感谢您倾听少女们身上发生的事。</p>
+        <p class="disclaimer">※ 游戏情节纯属虚构，祝您生活愉快！</p>
+    </div>
+
+    <div class="support-hint">
+        🥤 如果喜欢该作品，可以赞助作者大大一杯矿泉水！
+    </div>
+
+    <div class="media-grid">
+        <div class="media-item">
+            <img src="wechat.jpg" class="media-img" alt="微信">
+            <div class="media-label">微信联系</div>
+        </div>
+        <div class="media-item">
+            <img src="zanshang.jpg" class="media-img" alt="赞赏">
+            <div class="media-label">赞赏码</div>
+        </div>
+        <div class="media-item">
+            <img src="xiaohongshu.jpg" class="media-img" alt="小红书">
+            <div class="media-label">小红书</div>
+        </div>
+    </div>
+
+    <img src="aniprin01.gif" class="footer-deco" alt="pompom">
+</div>
+
+</body>
+</html>

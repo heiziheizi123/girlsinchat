@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>☆~ 萱萱和她的闺蜜小屋 ~☆ - chat02</title>
+    <style>
+        /* 复古 2000s 极繁主义大红大粉视觉震撼 */
+        * {
+            box-sizing: border-box;
+            /* 古早网页的鼠标指针特效 */
+            cursor: url('https://cur.cursors-4u.net/symbols/sym-7/sym654.cur'), auto !important;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('background319.gif');
+            background-repeat: repeat;
+            background-color: #ffe6f2; 
+            color: #ff007f;
+            /* 强制使用宋体，制造时代粗糙感 */
+            font-family: "SimSun", "宋体", "MS Serif", sans-serif;
+            font-size: 13px;
+        }
+
+        /* 闪烁与彩虹特效 */
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.1; }
+            100% { opacity: 1; }
+        }
+        .blink {
+            animation: blink 0.8s infinite;
+        }
+
+        /* 古早跑马灯滚动字幕样式 */
+        marquee {
+            background: #ff007f;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 4px;
+            border-bottom: 2px solid #ffffff;
+            font-size: 12px;
+        }
+
+        /* Banner 区域魔改：迪斯科霓虹感 */
+        header.banner {
+            text-align: center;
+            padding: 20px 10px;
+            background: #ffb3d9;
+            border: 4px outset #ff007f;
+            margin: 10px;
+            box-shadow: inset 3px 3px 0px #ffffff;
+        }
+        header.banner h1 {
+            margin: 0;
+            font-size: 26px;
+            color: #ffffff;
+            text-shadow: 2px 2px 0px #ff007f, 4px 4px 0px #ff66b2, 6px 6px 0px #4d0026;
+            letter-spacing: 2px;
+        }
+        .banner .subtitle {
+            font-size: 13px;
+            color: #ffffff;
+            background: #ff007f;
+            display: inline-block;
+            padding: 3px 10px;
+            margin-top: 10px;
+            border: 1px dashed #ffffff;
+        }
+
+        /* 经典三栏布局 */
+        .main-container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        /* 侧边栏统一做成 Windows98/QQ空间 伪3D大框 */
+        aside {
+            width: 240px;
+            background: #fff0f5;
+            border: 3px outset #ff66b2;
+            padding: 12px;
+            box-shadow: 4px 4px 0px #ff007f;
+        }
+        aside h3 {
+            font-size: 14px;
+            background: linear-gradient(to right, #ff007f, #ff66b2);
+            color: #fff;
+            margin-top: 0;
+            padding: 6px;
+            text-align: center;
+            border: 1px outset #ffffff;
+        }
+
+        .sidebar-left p {
+            font-size: 12px;
+            line-height: 1.6;
+            color: #cc0066;
+            margin: 8px 0;
+        }
+        
+        /* 娃娃素材图居中贴在左栏 */
+        .doll-img {
+            display: block;
+            margin: 15px auto;
+            border: 2px ridge #ff007f;
+            background: #ffffff;
+            padding: 5px;
+        }
+
+        main.content-center {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* 模块箱子古早化 */
+        .module-box {
+            background: #ffffff;
+            border: 3px outset #ff66b2;
+            padding: 15px;
+            box-shadow: 4px 4px 0px #ffb3d9;
+        }
+        .module-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+            background: #ff3399;
+            padding: 4px 8px;
+            border-bottom: 2px solid #ff007f;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        /* 素材 LINE44.gif 作为像素线 */
+        .pixel-line {
+            display: block;
+            width: 100%;
+            height: 12px;
+            background-image: url('LINE44.gif');
+            background-repeat: repeat-x;
+            margin: 10px 0;
+        }
+
+        /* 聊天记录：火星文即视感配色 */
+        .chat-log {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .chat-item {
+            font-size: 13px;
+            line-height: 1.5;
+            background: #fff0f5;
+            padding: 8px;
+            border: 1px dotted #ff007f;
+        }
+        /* 针对不同用户进行非主流眼花缭乱染色 */
+        .chat-item:nth-child(odd) { background: #ffe6f2; }
+        .user-b-color { color: #ff00ff; font-weight: bold; }
+        .user-e-color { color: #cc0000; font-weight: bold; }
+        .user-c-color { color: #008080; font-weight: bold; }
+        .user-a-color { color: #ff4500; font-weight: bold; }
+        .user-d-color { color: #9400d3; font-weight: bold; }
+
+        .chat-text {
+            color: #000000;
+        }
+        .chat-text a {
+            color: #0000ff;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        /* 密码模块 */
+        .diary-auth {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        .diary-input {
+            flex: 1;
+            padding: 6px;
+            border: 2px inset #ff66b2;
+            background: #fff;
+            color: #ff007f;
+            font-weight: bold;
+            font-family: "SimSun";
+        }
+        .diary-btn {
+            background: #ff66b2;
+            color: white;
+            border: 2px outset #ffffff;
+            padding: 4px 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .diary-btn:hover {
+            background: #ff007f;
+        }
+        
+        .diary-content {
+            display: none;
+            background: #ffffcc; /* 怀旧小黄纸色 */
+            border: 2px dashed #ff007f;
+            padding: 15px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .secret-link {
+            display: inline-block;
+            font-size: 16px;
+            font-weight: bold;
+            color: #0000ff !important;
+            text-decoration: underline !important;
+            animation: blink 1s infinite;
+        }
+
+        /* 相册 */
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        .album-item {
+            background: white;
+            border: 2px inset #ffcbdc;
+            padding: 5px;
+            text-align: center;
+        }
+        .album-item img {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ff99cc;
+        }
+        .album-item span {
+            font-size: 11px;
+            color: #660033;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* 右栏列表与精灵素材 */
+        .sidebar-right .user-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar-right .user-list li {
+            padding: 5px 0;
+            font-size: 12px;
+            border-bottom: 1px dotted #ffcbdc;
+            color: #cc0066;
+        }
+        .puffs-img {
+            display: block;
+            margin: 15px auto 0 auto;
+            max-width: 100%;
+        }
+
+        /* Footer 自由切换日期样式 */
+        footer.page-footer {
+            background: #ffcbdc;
+            border: 4px outset #ff66b2;
+            padding: 15px;
+            margin: 15px 10px;
+            box-shadow: inset 2px 2px 0px #ffffff;
+        }
+        .footer-nav {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .footer-nav a {
+            color: #ff007f;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        .date-switcher-title {
+            text-align: center;
+            font-size: 12px;
+            color: #4d0026;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .date-grid {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 4px;
+        }
+        .date-btn {
+            display: block;
+            text-align: center;
+            padding: 5px 2px;
+            background: #fff;
+            border: 2px outset #ffcbdc;
+            color: #ff007f;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .date-btn:hover {
+            background-color: #ff007f;
+            color: #ffffff;
+            border-style: inset;
+        }
+        .date-btn.current {
+            background-color: #ff3399;
+            color: #ffff00; /* 金黄色亮字 */
+            border: 2px inset #4d0026;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .main-container { flex-direction: column; }
+            aside { width: 100%; }
+            .date-grid { grid-template-columns: repeat(5, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <marquee scrollamount="4" behavior="scroll" direction="left">
+        欢迎来到我们的秘密基地！☆ 这里只有香香的软妹哦！☆ 严禁小哥哥与坏人入内！☆ 么么哒 🌸 🌸 🌸 记得踩踩我的留言板哟！
+    </marquee>
+
+    <header class="banner">
+        <h1><span class="blink">★</span> 欢迎来到有缘闺蜜手拉手聊天室 <span class="blink">★</span></h1>
+        <div class="subtitle">历史记录归档节点：2016-04-12 (chat02)</div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar-left">
+            <h3>房间公告栏</h3>
+            <img src="chinese_new_2.gif" class="doll-img" alt="看板娘">
+            <p><b>房间名称：</b><br>找闺蜜，年龄相符的进</p>
+            <p><b>空间宣言：</b><br>给你我的真心，我们是一辈子的好姐妹！谁退群谁是小狗！🐶</p>
+        </aside>
+
+        <main class="content-center">
+            <div class="module-box">
+                <div class="module-title">💌 聊天快照 (2016/4/12)</div>
+                <div class="chat-log">
+                    <div class="chat-item">
+                        <span class="chat-user user-b-color">用户 b：</span>
+                        <span class="chat-text">谢谢萱萱，@用户e，我们的聊天室有美化了 ，好可爱呀，我喜欢这种风格</span>
+                    </div>
+                    <div class="chat-item">
+                        <span class="chat-user user-e-color">用户e：</span>
+                        <span class="chat-text">不用谢啦，举手之劳</span>
+                    </div>
+                    <div class="chat-item">
+                        <span class="chat-user user-c-color">用户c：</span>
+                        <span class="chat-text">这个网站功能还挺齐全，私密日记功能也有，还有提醒事项诶</span>
+                    </div>
+                    <div class="chat-item">
+                        <span class="chat-user user-a-color">用户a：</span>
+                        <span class="chat-text">哇，不小心点到了别人的聊天室，结果全都是些看不懂的东西！</span>
+                    </div>
+                    <div class="chat-item">
+                        <span class="chat-user user-d-color">用户d：</span>
+                        <span class="chat-text">@用户a 网络交友要注意安全呀！链接：<a href="https://mt.sohu.com/20150917/n421351762.shtml">测测你百家姓第几位</a></span>
+                    </div>
+                    <div class="chat-item">
+                        <span class="chat-user user-e-color">e：</span>
+                        <span class="chat-text">@用户d 我和你同一个姓诶！好巧</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pixel-line"></div>
+
+            <div class="module-box">
+                <div class="module-title">🔑 少女们的加密私密日记</div>
+                <div class="diary-auth">
+                    <input type="text" id="diaryPassword" class="diary-input" placeholder="密码提示：我们的理想" oninput="cleanInput(this)">
+                    <button onclick="verifyPassword()" class="diary-btn">解密</button>
+                </div>
+                
+                <div id="diaryContent" class="diary-content">
+                    <p style="color: #ff007f; font-weight: bold; margin-top:0;" id="diaryOwnerName">🔓 成功加载日记空间：</p>
+                    <a href="ggg.html" class="secret-link">→ 点击此处，进入该少女的备份网页归档日志 (ggg.html) ←</a>
+                </div>
+            </div>
+
+            <div class="pixel-line"></div>
+
+            <div class="module-box">
+                <div class="module-title">🌸 我们的生活相册</div>
+                <div class="album-grid">
+                    <div class="album-item">
+                        <img src="111.jpg" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/ffe6f2/ff007f?text=111.jpg';" alt="111.jpg">
+                        <span>日常</span>
+                    </div>
+                    <div class="album-item">
+                        <img src="222.jpg" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/ffe6f2/ff007f?text=222.jpg';" alt="222.jpg">
+                        <span>日常</span>
+                    </div>
+                    <div class="album-item">
+                        <img src="333.jpg" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/ffe6f2/ff007f?text=333.jpg';" alt="333.jpg">
+                        <span>今天的晚霞好美 🌇</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <aside class="sidebar-right">
+            <h3>当前房间常客</h3>
+            <ul class="user-list">
+                <li>用户a</li>
+                <li>用户b</li>
+                <li>用户c</li>
+                <li>用户d</li>
+                <li>用户e (萱萱)</li>
+            </ul>
+            <img src="puffs.gif" class="puffs-img" alt="像素乐队">
+        </aside>
+    </div>
+
+    <footer class="page-footer">
+        <div class="footer-nav"><a href="start.html">💖 返回历史快照主页控制台</a></div>
+        <div class="date-switcher-title">👉 任意穿梭历史备份日志节点 (chat01-10)：</div>
+        <div class="date-grid">
+            <a href="chat01.html" class="date-btn">chat01</a>
+            <a href="chat02.html" class="date-btn current">chat02</a>
+            <a href="chat03.html" class="date-btn">chat03</a>
+            <a href="chat04.html" class="date-btn">chat04</a>
+            <a href="chat05.html" class="date-btn">chat05</a>
+            <a href="chat06.html" class="date-btn">chat06</a>
+            <a href="chat07.html" class="date-btn">chat07</a>
+            <a href="chat08.html" class="date-btn">chat08</a>
+            <a href="chat09.html" class="date-btn">chat09</a>
+            <a href="chat10.html" class="date-btn">chat10</a>
+        </div>
+    </footer>
+
+    <script>
+        // 实时过滤函数：利用正则表达式把任何空格（\s）和数字（\d）全部剔除掉
+        function cleanInput(inputEl) {
+            inputEl.value = inputEl.value.replace(/[\s\d]/g, '');
+        }
+
+        function verifyPassword() {
+            var inputPwd = document.getElementById("diaryPassword").value.trim().toLowerCase();
+            var resultBox = document.getElementById("diaryContent");
+            var nameField = document.getElementById("diaryOwnerName");
+
+            // 设定的理想密码由于去除了空格，匹配目标即为 "tomeeteachother"
+            if (inputPwd === "tomeeteachother") {
+                nameField.innerHTML = "🔓 成功加载少女们的秘密誓言空间：";
+                resultBox.style.display = "block";
+                alert("🔓 密码验证正确！“To meet each other” —— 终会相见。");
+            } else {
+                resultBox.style.display = "none";
+                alert("❌ 错误：输入的数据无法在数据库中完成闭环校验。");
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>突发新闻 - 每日焦点网</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        /* 新闻导航栏仿真 */
+        .news-header {
+            background-color: #1a1a1a;
+            border-bottom: 2px solid #ff3b30;
+            padding: 15px 20px;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 2px;
+            font-size: 18px;
+            color: #ffffff;
+        }
+
+        /* 主体内容容器 */
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* 新闻标签 */
+        .badge {
+            display: inline-block;
+            background-color: #ff3b30;
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 3px;
+            margin-bottom: 15px;
+        }
+
+        /* 新闻主标题 */
+        h1.news-title {
+            font-size: 32px;
+            color: #ffffff;
+            margin: 0 0 15px 0;
+            line-height: 1.3;
+        }
+
+        /* 新闻元信息 */
+        .news-meta {
+            font-size: 14px;
+            color: #888;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        /* 新闻正文段落 */
+        .news-content {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #d1d1d1;
+            margin-bottom: 30px;
+        }
+
+        /* 图片区域外壳 */
+        .image-wrapper {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        /* 新闻图片 */
+        .news-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            margin: 0 auto;
+            transition: filter 0.3s ease;
+        }
+
+        /* 图片下方的图注 */
+        .image-caption {
+            font-size: 13px;
+            color: #888;
+            margin-top: 10px;
+            font-style: italic;
+            transition: color 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="news-header">
+        📰 CRISIS NEWS // 突发新闻快讯
+    </div>
+
+    <div class="container">
+        
+        <span class="badge">最新进展</span>
+        
+        <h1 class="news-title">无上圣佛已落网</h1>
+        
+        <div class="news-meta">
+            发布时间：刚刚 &nbsp;|&nbsp; 来源：本市网络安全犯罪调查科
+        </div>
+        
+        <div class="news-content">
+            666真活该
+        </div>
+
+        <div class="image-wrapper">
+            <img id="target-image" src="fo.jpg" alt="无上圣佛落网照片" class="news-image">
+            <div id="target-caption" class="image-caption">图：犯罪嫌疑人“无上圣佛”落网审讯画面截屏</div>
+        </div>
+
+    </div>
+
+    <script>
+        // 提前预加载笑着的图片，防止切换时闪白屏
+        const imgCache = new Image();
+        imgCache.src = "fo2.jpg";
+
+        window.onload = function() {
+            const newsImg = document.getElementById('target-image');
+            const newsCaption = document.getElementById('target-caption');
+            
+            // 阶段 1：打开页面 3 秒后，图片切成笑着的 fo2.jpg
+            setTimeout(() => {
+                newsImg.src = "fo2.jpg";
+                newsCaption.textContent = "图：？？？？？？？？？？？？";
+                newsCaption.style.color = "#ff3b30"; // 图注文字变红，增加诡异感
+                
+                // 阶段 2：在变成 fo2.jpg 之后，再停留 3 秒（即总计 6000 毫秒），跳转真结局
+                setTimeout(() => {
+                    window.location.href = "good.html";
+                }, 3000);
+
+            }, 3000);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 闺蜜秘密基地聊天室 🌟 - chat08</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        /* 全局背景平铺 pentagra.gif */
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('pentagra.gif');
+            background-repeat: repeat;
+            background-color: #000000;
+            font-family: "SimSun", "宋体", sans-serif;
+            font-size: 13px;
+            color: #e4e4e7; /* 浅灰文字 */
+        }
+
+        /* 顶部滚动的深夜警示通知 */
+        marquee {
+            background: #09090b;
+            color: #f43f5e; 
+            font-weight: bold;
+            padding: 6px;
+            font-size: 12px;
+            border-bottom: 2px solid #3f3f46;
+        }
+
+        /* 头部大横幅背景：平铺 eyes90.gif */
+        header.chat-header {
+            max-width: 800px;
+            margin: 15px auto;
+            background-image: url('eyes90.gif');
+            background-repeat: repeat;
+            border: 4px outset #3f3f46;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.8);
+        }
+
+        .header-title-container {
+            background: rgba(9, 9, 11, 0.9);
+            padding: 12px 20px;
+            border: 2px dashed #f43f5e;
+            display: inline-block;
+        }
+
+        header h1 {
+            margin: 5px 0;
+            font-size: 22px;
+            color: #f4f4f5;
+            text-shadow: 2px 2px 2px #000;
+        }
+
+        .timestamp-badge {
+            background: #27272a;
+            color: #f43f5e;
+            padding: 3px 10px;
+            font-size: 12px;
+            margin-top: 6px;
+            display: inline-block;
+            border: 1px solid #52525b;
+            font-weight: bold;
+        }
+
+        /* 单栏式居中框架 */
+        .wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        /* 中间主要聊天视窗（暗黑灰色背景） */
+        main.chat-main {
+            width: 100%;
+            background: rgba(24, 24, 27, 0.95);
+            border: 3px outset #3f3f46;
+            padding: 15px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.6);
+        }
+
+        /* 聊天区域分割条 */
+        .chat-divider-top {
+            display: block;
+            width: 100%;
+            height: 15px;
+            background-image: url('pinkpurline.gif');
+            background-repeat: repeat-x;
+            margin-bottom: 15px;
+        }
+
+        .chat-divider-bottom {
+            display: block;
+            width: 100%;
+            height: 15px;
+            background-image: url('LINE44.gif');
+            background-repeat: repeat-x;
+            margin-top: 15px;
+        }
+
+        /* 聊天记录框 */
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message-row {
+            padding: 8px 10px;
+            border-bottom: 1px dashed #3f3f46;
+            line-height: 1.6;
+        }
+
+        /* 角色名字及颜色 */
+        .name-a { color: #f59e0b; font-weight: bold; } /* 亮金黄 */
+        .name-c { color: #10b981; font-weight: bold; } /* 翡翠绿 */
+        .name-e { color: #60a5fa; font-weight: bold; } /* 天空蓝 */
+        .at-tag { background-color: #451a03; color: #f59e0b; padding: 1px 4px; border-radius: 2px; font-weight: bold; }
+
+        /* 内嵌密码日记区 */
+        .diary-card-box {
+            margin-top: 25px;
+            background: #180828; 
+            border: 2px dashed #a855f7;
+            padding: 15px;
+            box-shadow: 3px 3px 0px #6b21a8;
+        }
+
+        .diary-card-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #c084fc;
+            margin-bottom: 6px;
+        }
+
+        .diary-input-group {
+            margin: 12px 0;
+        }
+
+        .diary-pwd-input {
+            padding: 5px 8px;
+            font-family: "SimSun", "宋体", monospace;
+            font-size: 12px;
+            background-color: #09090b;
+            color: #fff;
+            border: 2px inset #a855f7;
+            width: 200px;
+            outline: none;
+            vertical-align: middle;
+        }
+
+        .diary-submit-btn {
+            padding: 5px 14px;
+            background: #6b21a8;
+            color: #fff;
+            font-family: "SimSun", "宋体", sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            border: 2px outset #a855f7;
+            cursor: pointer;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+
+        .diary-submit-btn:hover { background: #581c87; }
+        .diary-submit-btn:active { border-style: inset; }
+
+        .diary-error-msg {
+            color: #f43f5e;
+            font-weight: bold;
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .diary-content-content {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #09090b;
+            border: 2px ridge #f43f5e;
+            text-align: left;
+            line-height: 1.8;
+            color: #e4e4e7;
+            font-size: 13px;
+            white-space: pre-line;
+            box-shadow: inset 0 0 10px rgba(244, 63, 94, 0.2);
+        }
+
+        .diary-content-content b {
+            color: #ef4444; 
+            font-size: 14px;
+        }
+
+        /* 底部历史控制台背景：平铺 eyes90.gif */
+        footer.history-console {
+            max-width: 800px;
+            margin: 20px auto;
+            background-image: url('eyes90.gif');
+            background-repeat: repeat;
+            border: 4px outset #3f3f46;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.8);
+        }
+
+        .console-container-inner {
+            background: rgba(24, 24, 27, 0.9);
+            padding: 10px;
+            border: 1px solid #3f3f46;
+        }
+
+        .console-links a {
+            color: #a1a1aa;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        
+        .console-links a:hover {
+            color: #f43f5e;
+        }
+
+        .timeline-title {
+            font-size: 12px;
+            font-weight: bold;
+            margin: 10px 0 5px 0;
+            color: #a1a1aa;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 4px;
+        }
+
+        .timeline-node {
+            display: block;
+            padding: 6px 0;
+            background: #27272a;
+            border: 2px outset #3f3f46;
+            color: #d4d4d8;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .timeline-node:hover {
+            background: #3f3f46;
+            color: #fff;
+            border-style: inset;
+        }
+
+        .timeline-node.active {
+            background: #09090b;
+            color: #f43f5e;
+            border: 2px inset #f43f5e;
+            pointer-events: none;
+        }
+
+        @media (max-width: 600px) {
+            .timeline-grid { grid-template-columns: repeat(5, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部通知 -->
+    <marquee scrollamount="3">
+        🌙 凌晨时分：检测未来正在逼近。
+    </marquee>
+
+    <!-- 头部大框 -->
+    <header class="chat-header">
+        <div class="header-title-container">
+            <h1>🌌 少女们的深夜星空秘密基地 🌌</h1>
+            <div class="timestamp-badge">备份归档时间轴：2023/05/18 (chat08)</div>
+        </div>
+    </header>
+
+    <!-- 核心排版框架 -->
+    <div class="wrapper">
+
+        <!-- 中间主要聊天视窗 -->
+        <main class="chat-main">
+            
+            <div class="chat-divider-top"></div>
+
+            <div class="chat-box">
+                <!-- 消息1 -->
+                <div class="message-row">
+                    <span class="name-c">用户 c：</span>
+                    <span class="msg-text">好冷清，我以为我们一直有话说</span>
+                </div>
+
+                <!-- 消息2 -->
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">大家都有点忙呀，话说<span class="at-tag">@用户 a</span>，你现在还好吗</span>
+                </div>
+
+                <!-- 消息3 -->
+                <div class="message-row">
+                    <span class="name-a">用户 a：</span>
+                    <span class="msg-text">还好，我今天好累，请假了出门走走</span>
+                </div>
+
+                <!-- 消息4 -->
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">是呀，要多放松一下，好好享受你的假期吧</span>
+                </div>
+
+                <!-- 消息5 -->
+                <div class="message-row">
+                    <span class="name-c">用户 c：</span>
+                    <span class="msg-text">我也要开始考学校了，选学校也好累</span>
+                </div>
+
+                <!-- 消息6 -->
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">你们两个都加油呀</span>
+                </div>
+
+                <!-- 消息7 -->
+                <div class="message-row">
+                    <span class="name-a">用户 a：</span>
+                    <span class="msg-text">哈哈，谢谢你了萱萱，谢谢你了心洁<span class="at-tag">@用户 e</span></span>
+                </div>
+
+                <!-- 消息8 -->
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">梦怡你别给自己太大的压力啦，人生再怎么样都不会垮的啦，记得晚上和我续火花</span>
+                </div>
+
+                <!-- 消息9 -->
+                <div class="message-row">
+                    <span class="name-c">用户 c：</span>
+                    <span class="msg-text">梦怡你别太担心未来了，只要活着总有希望的对不对</span>
+                </div>
+
+                <!-- 消息10 -->
+                <div class="message-row">
+                    <span class="name-a">用户 a：</span>
+                    <span class="msg-text">一直以来都谢谢你们了！晚安</span>
+                </div>
+
+                <!-- 消息11 -->
+                <div class="message-row">
+                    <span class="name-e">用户 e：</span>
+                    <span class="msg-text">梦怡你别想不开，你现在在哪，我来找你？</span>
+                </div>
+            </div>
+
+            <div class="chat-divider-bottom"></div>
+
+
+        </main>
+
+    </div>
+
+    <!-- 底部控制台 -->
+    <footer class="history-console">
+        <div class="console-container-inner">
+            <div class="console-links"><a href="start.html">🚪 返回核心控制台总览主页</a></div>
+            <div class="timeline-title">📁 快照时间轴切片索引 (当前：chat08)：</div>
+            <div class="timeline-grid">
+                <a href="chat01.html" class="timeline-node">chat01</a>
+                <a href="chat02.html" class="timeline-node">chat02</a>
+                <a href="chat03.html" class="timeline-node">chat03</a>
+                <a href="chat04.html" class="timeline-node">chat04</a>
+                <a href="chat05.html" class="timeline-node">chat05</a>
+                <a href="chat06.html" class="timeline-node">chat06</a>
+                <a href="chat07.html" class="timeline-node">chat07</a>
+                <a href="chat08.html" class="timeline-node active">chat08</a>
+                <a href="chat09.html" class="timeline-node">chat09</a>
+                <a href="chat10.html" class="timeline-node">chat10</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
