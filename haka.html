@@ -14,91 +14,115 @@
             background-color: #121212;
             color: #e0e0e0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh; 
+            overflow: hidden; /* 完美一屏流 */
         }
 
         /* 新闻导航栏仿真 */
         .news-header {
             background-color: #1a1a1a;
             border-bottom: 2px solid #ff3b30;
-            padding: 15px 20px;
+            padding: 10px 20px;
             text-align: center;
             font-weight: bold;
             letter-spacing: 2px;
-            font-size: 18px;
+            font-size: 14px;
             color: #ffffff;
+            flex-shrink: 0;
         }
 
         /* 主体内容容器 */
         .container {
-            max-width: 700px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
 
-        /* 新闻标签 */
         .badge {
             display: inline-block;
             background-color: #ff3b30;
             color: #fff;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
-            padding: 4px 8px;
+            padding: 3px 6px;
             border-radius: 3px;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
 
-        /* 新闻主标题 */
         h1.news-title {
-            font-size: 32px;
+            font-size: 22px; 
             color: #ffffff;
-            margin: 0 0 15px 0;
-            line-height: 1.3;
+            margin: 0 0 6px 0;
+            line-height: 1.2;
         }
 
-        /* 新闻元信息 */
         .news-meta {
-            font-size: 14px;
-            color: #888;
-            border-bottom: 1px solid #333;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 15px;
+            width: 100%;
         }
 
-        /* 新闻正文段落 */
+        /* “666真活该”文本 */
         .news-content {
-            font-size: 18px;
-            line-height: 1.8;
-            color: #d1d1d1;
-            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #ff453a;
+            font-weight: bold;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
         }
 
-        /* 图片区域外壳 */
+        /* 照片墙容器 */
         .image-wrapper {
             background-color: #1a1a1a;
             border: 1px solid #333;
-            padding: 10px;
+            padding: 8px;
             border-radius: 6px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            max-width: 320px;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
 
         /* 新闻图片 */
         .news-image {
             max-width: 100%;
+            max-height: 38vh;
             height: auto;
             border-radius: 4px;
             display: block;
             margin: 0 auto;
-            transition: filter 0.3s ease;
         }
 
-        /* 图片下方的图注 */
         .image-caption {
-            font-size: 13px;
-            color: #888;
-            margin-top: 10px;
+            font-size: 11px;
+            color: #777;
+            margin-top: 8px;
             font-style: italic;
-            transition: color 0.3s ease;
+        }
+
+        /* ================= 核心：闪烁动画 CSS ================= */
+        @keyframes glitch-blink {
+            0%   { opacity: 1; filter: brightness(1); }
+            20%  { opacity: 0; filter: brightness(0); } /* 第一次变黑 */
+            40%  { opacity: 1; filter: brightness(1.8); } /* 闪烁亮起 */
+            60%  { opacity: 0; filter: brightness(0); } /* 第二次变黑 */
+            80%  { opacity: 1; filter: brightness(1.5); }
+            100% { opacity: 1; filter: brightness(1); }
+        }
+
+        /* 动态赋予这个类名来触发闪烁，总计耗时 0.4 秒 */
+        .flash-active {
+            animation: glitch-blink 0.4s ease-in-out;
         }
     </style>
 </head>
@@ -122,7 +146,7 @@
             666真活该
         </div>
 
-        <div class="image-wrapper">
+        <div id="photo-box" class="image-wrapper">
             <img id="target-image" src="fo.jpg" alt="无上圣佛落网照片" class="news-image">
             <div id="target-caption" class="image-caption">图：犯罪嫌疑人“无上圣佛”落网审讯画面截屏</div>
         </div>
@@ -130,21 +154,30 @@
     </div>
 
     <script>
-        // 提前预加载笑着的图片，防止切换时闪白屏
+        // 预加载 fo2.jpg
         const imgCache = new Image();
         imgCache.src = "fo2.jpg";
 
         window.onload = function() {
+            const photoBox = document.getElementById('photo-box');
             const newsImg = document.getElementById('target-image');
             const newsCaption = document.getElementById('target-caption');
             
-            // 阶段 1：打开页面 3 秒后，图片切成笑着的 fo2.jpg
+            // 1. 前 3 秒没事。在第 3 秒（3000毫秒）时，让画面闪烁并切图
             setTimeout(() => {
-                newsImg.src = "fo2.jpg";
-                newsCaption.textContent = "图：？？？？？？？？？？？？";
-                newsCaption.style.color = "#ff3b30"; // 图注文字变红，增加诡异感
                 
-                // 阶段 2：在变成 fo2.jpg 之后，再停留 3 秒（即总计 6000 毫秒），跳转真结局
+                // 给容器加上闪烁动画类名（开始闪烁）
+                photoBox.classList.add('flash-active');
+                
+                // 在闪烁动画进行到一半（比如 0.15 秒，玩家眼睛一黑的瞬间），悄悄把图和文字换掉
+                setTimeout(() => {
+                    newsImg.src = "fo2.jpg";
+                    newsCaption.textContent = "图：？？？？？？？？？？？？";
+                    newsCaption.style.color = "#ff3b30";
+                }, 150);
+                
+                // 2. 切换图片后，完美维持 3 秒（3000毫秒），然后跳转真结局 good.html
+                // 因为动画本身花了时间，这里直接算切图后等待3000毫秒
                 setTimeout(() => {
                     window.location.href = "good.html";
                 }, 3000);
