@@ -234,7 +234,7 @@
 
     <!-- 搜索输入框 -->
     <div class="search-box">
-        <input type="text" id="keywords" class="search-input" placeholder="尝试搜索一些日期与人名吧！" autocomplete="off">
+        <input type="text" id="keywords" class="search-input" placeholder="输入日期或人名（日期格式不限）" autocomplete="off">
         <button type="button" class="search-button" onclick="executeSearch()">检索</button>
     </div>
 
@@ -321,8 +321,36 @@
         }
     };
 
+    // 统一玩家输入格式：日期可使用 YYYY/M/D、YYYY/MM/DD、YYYY-MM-DD 或 YYYYMMDD
+    function normalizeSearchQuery(rawQuery) {
+        const query = rawQuery.trim();
+
+        // 剧情中常用简称，兼容玩家按聊天内容直接搜索
+        const nameAliases = {
+            "心洁": "沈心洁"
+        };
+        if (nameAliases[query]) {
+            return nameAliases[query];
+        }
+
+        // 纯数字日期，例如 20230519
+        const compactDate = query.match(/^(\d{4})(\d{2})(\d{2})$/);
+        if (compactDate) {
+            return `${compactDate[1]}/${Number(compactDate[2])}/${Number(compactDate[3])}`;
+        }
+
+        // 带分隔符的日期，也兼容“年/月/日”和前导零
+        const separatedDate = query.match(/^(\d{4})\s*[\/.-年]\s*(\d{1,2})\s*[\/.-月]\s*(\d{1,2})\s*日?$/);
+        if (separatedDate) {
+            return `${separatedDate[1]}/${Number(separatedDate[2])}/${Number(separatedDate[3])}`;
+        }
+
+        return query;
+    }
+
     function executeSearch() {
-        const query = document.getElementById("keywords").value.trim();
+        const rawQuery = document.getElementById("keywords").value;
+        const query = normalizeSearchQuery(rawQuery);
         const resultPanel = document.getElementById("resultPanel");
         const errorBox = document.getElementById("errorBox");
         const btnGroup = document.getElementById("btnGroup");
